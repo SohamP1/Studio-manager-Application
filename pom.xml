@@ -133,7 +133,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.cs_213_project_iii/org.example.cs_213_project_iii.HelloApplication
+                            <mainClass>org.example.cs_213_project_iii/cs_213_project_iii.fitness.studiomanager.StudioManagerMain
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

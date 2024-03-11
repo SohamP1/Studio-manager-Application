@@ -11,6 +11,6 @@ module org.example.cs_213_project_iii {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
-    opens org.example.cs_213_project_iii to javafx.fxml;
-    exports org.example.cs_213_project_iii;
+    opens cs_213_project_iii.fitness.studiomanager to javafx.fxml;
+    exports cs_213_project_iii.fitness.studiomanager;
 }
