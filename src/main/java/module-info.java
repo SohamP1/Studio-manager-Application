@@ -10,7 +10,9 @@ module org.example.cs_213_project_iii {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires org.testng;
+    requires junit;
 
-    opens cs_213_project_iii.fitness.studiomanager to javafx.fxml;
-    exports cs_213_project_iii.fitness.studiomanager;
+    opens studiomanagerFX to javafx.fxml;
+    exports studiomanagerFX;
 }

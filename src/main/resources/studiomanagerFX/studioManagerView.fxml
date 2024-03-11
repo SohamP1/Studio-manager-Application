@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studiomanagerFX.StudioManagerController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -54,10 +53,10 @@
                           </rowConstraints>
                            <children>
                               <Label prefHeight="2.0" prefWidth="90.0" text="Member Profile" />
-                              <TextField maxWidth="300.0" promptText="firstname" GridPane.columnIndex="1" />
-                              <TextField layoutX="121.0" layoutY="11.0" maxWidth="300.0" promptText="lastname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <DatePicker maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="firstname" maxWidth="300.0" promptText="firstname" GridPane.columnIndex="1" />
+                              <TextField fx:id="lastname" layoutX="121.0" layoutY="11.0" maxWidth="300.0" promptText="lastname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label prefHeight="2.0" prefWidth="90.0" text="Member Type" GridPane.rowIndex="6" />
                               <RadioButton mnemonicParsing="false" text="Basic" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <RadioButton mnemonicParsing="false" text="Family" GridPane.columnIndex="1" GridPane.rowIndex="7" />
@@ -68,13 +67,13 @@
                               <RadioButton layoutX="111.0" layoutY="270.0" mnemonicParsing="false" text="Franklin" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                               <RadioButton mnemonicParsing="false" text="Piscataway" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                               <RadioButton mnemonicParsing="false" text="Somerville" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" style="-fx-border-color: green;" text="Add Member" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+                              <Button mnemonicParsing="false" onAction="#onclickAddmember" prefHeight="27.0" prefWidth="150.0" style="-fx-border-color: green;" text="Add Member" GridPane.columnIndex="1" GridPane.rowIndex="20" />
                               <Label text="Guest Pass" GridPane.rowIndex="10" />
                               <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Button layoutX="132.0" layoutY="399.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Load Members" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                              <Button layoutX="132.0" layoutY="399.0" mnemonicParsing="false" onAction="#onclickLoadMembers" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Load Members" GridPane.columnIndex="1" GridPane.rowIndex="18" />
                            </children>
                         </GridPane>
-                        <TextArea layoutX="15.0" layoutY="457.0" prefHeight="200.0" prefWidth="770.0" style="-fx-border-color: black;" />
+                        <TextArea fx:id="outputArea" layoutX="15.0" layoutY="457.0" prefHeight="200.0" prefWidth="770.0" style="-fx-border-color: black;" />
                      </children>
                   </AnchorPane>
             </content>

@@ -1,4 +1,4 @@
-package cs_213_project_iii.fitness.studiomanager;
+package studiomanagerFX;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
