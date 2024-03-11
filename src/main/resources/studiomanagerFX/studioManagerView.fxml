@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -16,6 +17,8 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studiomanagerFX.StudioManagerController">
    <center>
@@ -58,7 +61,7 @@
                               <TextField fx:id="firstname" maxWidth="300.0" promptText="firstname" GridPane.columnIndex="1" />
                               <TextField fx:id="lastname" layoutX="121.0" layoutY="11.0" maxWidth="300.0" promptText="lastname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="28.0" prefWidth="121.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label prefHeight="2.0" prefWidth="90.0" text="Member Type" GridPane.rowIndex="6" />
                               <RadioButton mnemonicParsing="false" text="Basic" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <RadioButton mnemonicParsing="false" text="Family" GridPane.columnIndex="1" GridPane.rowIndex="7" />
@@ -72,7 +75,7 @@
                               <Button mnemonicParsing="false" onAction="#onclickAddmember" prefHeight="27.0" prefWidth="150.0" style="-fx-border-color: green;" text="Add Member" GridPane.columnIndex="1" GridPane.rowIndex="20" />
                               <Label text="Guest Pass" GridPane.rowIndex="10" />
                               <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Button layoutX="132.0" layoutY="399.0" mnemonicParsing="false" onAction="#onclickLoadMembers" prefHeight="27.0" prefWidth="100.0" style="-fx-border-color: green;" text="Load Members" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                              <Button layoutX="132.0" layoutY="399.0" mnemonicParsing="false" onAction="#onclickLoadMembers" prefHeight="28.0" prefWidth="119.0" style="-fx-border-color: green;" text="Load Members" GridPane.columnIndex="1" GridPane.rowIndex="18" />
                            </children>
                         </GridPane>
                         <TextArea fx:id="outputArea" layoutX="15.0" layoutY="457.0" prefHeight="200.0" prefWidth="770.0" style="-fx-border-color: black;" />
@@ -82,7 +85,159 @@
           </Tab>
           <Tab text="Class Attendence">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="51.0" layoutY="34.0" prefHeight="250.0" prefWidth="718.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.9764404296875" minWidth="10.0" prefWidth="118.30807495117188" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="642.5975799560547" minWidth="10.0" prefWidth="600.1919250488281" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="45.40740966796875" minHeight="0.0" prefHeight="34.05387878417969" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="37.83837890625" minHeight="0.0" prefHeight="35.94612121582031" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="40.0" text="Class">
+                                 <GridPane.margin>
+                                    <Insets left="30.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Instructor" GridPane.rowIndex="2">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <GridPane.margin>
+                                    <Insets left="30.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Location" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="30.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Member" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="30.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Pilates" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Spinning" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="100.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Cardio" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="200.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Jennifer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <RadioButton mnemonicParsing="false" text="Kim" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="100.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Denise" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="200.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Davis" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="300.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Emma" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="400.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Bridgewater" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <RadioButton mnemonicParsing="false" text="Edison" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="100.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Frankiln" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="200.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Piscataway" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <RadioButton mnemonicParsing="false" text="Somerville" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets left="100.0" />
+                                 </GridPane.margin>
+                              </RadioButton>
+                              <TextField maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="first name" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
+                              <TextField maxWidth="200.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="250.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="390.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <DatePicker promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Label text="Guest Pass Remaining" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="250.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" text="Add Member " GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <Button mnemonicParsing="false" text="Remove Member" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <GridPane.margin>
+                                    <Insets left="100.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" text="Add Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <GridPane.margin>
+                                    <Insets left="220.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" text="Remove Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <GridPane.margin>
+                                    <Insets left="305.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Line endX="617.2928466796875" endY="7.748603820800781E-7" startX="-100.0" GridPane.rowIndex="1" />
+                              <Line endX="617.2928466796875" endY="0.2929084897041321" startX="-100.0" GridPane.rowIndex="3" />
+                              <Line endX="617.4999389648438" startX="-100.0" GridPane.rowIndex="6" />
+                              <Line endX="617.2928466796875" endY="-0.20710676908493042" startX="-100.0" GridPane.rowIndex="9" />
+                           </children>
+                        </GridPane>
+                        <TextArea layoutX="40.0" layoutY="324.0" prefHeight="318.0" prefWidth="727.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Class Schedule">
