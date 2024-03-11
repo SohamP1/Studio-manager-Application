@@ -1,7 +1,10 @@
 package studiomanagerFX;
 
+import enums.Location;
+import impl.FitnessClass;
 import impl.MemberList;
 import impl.Schedule;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -69,4 +72,14 @@ public class StudioManagerController {
             outputArea.setText("Error loading initial files: " + e.getMessage());
         }
     }
+
+    @FXML
+    private TableView<Location> studio_location_table;
+    @FXML
+    private TableColumn<Location, String> col_city, col_county, col_zip;
+
+    @FXML
+    private TableView<FitnessClass> class_schedule_table;
+    @FXML
+    private TableColumn<FitnessClass, String> col_time, col_class_name, col_instructor, col_studio_location;
 }
