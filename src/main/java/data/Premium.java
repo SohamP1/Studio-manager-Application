@@ -10,6 +10,10 @@ import enums.Location;
  */
 public class Premium extends Member {
 
+    public void setGuestPass(int guestPass) {
+        this.guestPass = guestPass;
+    }
+
     /**
      * The number of guest passes currently available to the member. Guest passes allow the member to bring guests
      * to the fitness classes or facilities.
@@ -33,7 +37,6 @@ public class Premium extends Member {
      */
     public Premium(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
-        this.guestPass = 3;
     }
 
     /**
