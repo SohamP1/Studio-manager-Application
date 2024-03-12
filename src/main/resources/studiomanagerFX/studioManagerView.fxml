@@ -102,7 +102,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Class Attendence">
+          <Tab text="Class Attendance">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -160,7 +160,7 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Pilates" GridPane.columnIndex="1">
+                              <RadioButton fx:id="pilatesToggle" mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Pilates" GridPane.columnIndex="1">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -168,66 +168,66 @@
                                     <Insets />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Spinning" GridPane.columnIndex="1">
+                              <RadioButton fx:id="spinningToggle" mnemonicParsing="false" text="Spinning" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="100.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Cardio" GridPane.columnIndex="1">
+                              <RadioButton fx:id="cardioToggle" mnemonicParsing="false" text="Cardio" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="200.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Jennifer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <RadioButton mnemonicParsing="false" text="Kim" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <RadioButton fx:id="jeniferToggle" mnemonicParsing="false" text="Jennifer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <RadioButton fx:id="kimToggle" mnemonicParsing="false" text="Kim" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="100.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Denise" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <RadioButton fx:id="deniseToggle" mnemonicParsing="false" text="Denise" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="200.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Davis" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <RadioButton fx:id="davisToggle" mnemonicParsing="false" text="Davis" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="300.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Emma" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <RadioButton fx:id="emmaToggle" mnemonicParsing="false" text="Emma" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="400.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Bridgewater" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <RadioButton mnemonicParsing="false" text="Edison" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <RadioButton fx:id="classBridgewaterToggle" mnemonicParsing="false" text="Bridgewater" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <RadioButton fx:id="classEdisonToggle" mnemonicParsing="false" text="Edison" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="100.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Frankiln" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <RadioButton fx:id="classFranklinToggle" mnemonicParsing="false" text="Frankiln" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="200.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Piscataway" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <RadioButton mnemonicParsing="false" text="Somerville" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <RadioButton fx:id="classPiscatawayToggle" mnemonicParsing="false" text="Piscataway" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <RadioButton fx:id="classSomervilleToggle" mnemonicParsing="false" text="Somerville" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets left="100.0" />
                                  </GridPane.margin>
                               </RadioButton>
-                              <TextField maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="first name" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
-                              <TextField maxWidth="200.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <TextField fx:id="classFirstname" maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="first name" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
+                              <TextField fx:id="classLastname" maxWidth="200.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets left="250.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                              <TextField fx:id="classGuestPasses" maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets left="390.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <DatePicker promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <DatePicker fx:id="classAttendanceDate" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                               <Label text="Guest Pass Remaining" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets left="250.0" />

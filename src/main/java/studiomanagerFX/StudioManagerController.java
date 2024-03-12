@@ -36,6 +36,7 @@ public class StudioManagerController {
         schedule = new Schedule();
     }
 
+    //Membership Tab
     @FXML
     private TextField firstname;
     @FXML
@@ -44,6 +45,16 @@ public class StudioManagerController {
     private DatePicker dateOfBirth;
     @FXML
     private TextArea outputArea;
+
+    //class Attendance Tab
+    @FXML
+    public TextField classFirstname;
+    @FXML
+    public TextField classLastname;
+    @FXML
+    public TextField classGuestPasses;
+    @FXML
+    public DatePicker classAttendanceDate;
 
     @FXML
     private TableView<Location> studio_location_table;
@@ -58,15 +69,24 @@ public class StudioManagerController {
     private RadioButton basicToggle, familyToggle, premiumToggle;
     @FXML
     private RadioButton bridgewaterToggle, edisonToggle, franklinToggle, piscatawayToggle, somervilleToggle;
+    @FXML
+    private RadioButton pilatesToggle,spinningToggle,cardioToggle;
+    @FXML
+    private RadioButton jeniferToggle,kimToggle,deniseToggle,davisToggle,emmaToggle;
+    @FXML
+    private RadioButton classBridgewaterToggle, classEdisonToggle, classFranklinToggle, classPiscatawayToggle, classSomervilleToggle;
 
     private final ToggleGroup memberTypeGroup = new ToggleGroup();
     private final ToggleGroup homeStudioGroup = new ToggleGroup();
+    private final ToggleGroup classGroup = new ToggleGroup();
+    private final ToggleGroup instructorGroup = new ToggleGroup();
+    private final ToggleGroup classAttendanceGroupLocation = new ToggleGroup();
 
     @FXML
     private ComboBox<Integer> guestPass; // Ensure the ComboBox generic type matches with what you will insert, in this case, Integer.
 
     public void initialize() {
-        // Assign radio buttons to their respective ToggleGroups
+        // Assign radio buttons to their respective ToggleGroups in Membership Tab
         basicToggle.setToggleGroup(memberTypeGroup);
         familyToggle.setToggleGroup(memberTypeGroup);
         premiumToggle.setToggleGroup(memberTypeGroup);
@@ -76,6 +96,26 @@ public class StudioManagerController {
         franklinToggle.setToggleGroup(homeStudioGroup);
         piscatawayToggle.setToggleGroup(homeStudioGroup);
         somervilleToggle.setToggleGroup(homeStudioGroup);
+
+        //classAttendance tab assigning the class radio buttons to the group
+        pilatesToggle.setToggleGroup(classGroup);
+        spinningToggle.setToggleGroup(classGroup);
+        cardioToggle.setToggleGroup(classGroup);
+
+        //classAttendance tab assigning the instructors radio buttons to the group
+        jeniferToggle.setToggleGroup(instructorGroup);
+        kimToggle.setToggleGroup(instructorGroup);
+        deniseToggle.setToggleGroup(instructorGroup);
+        davisToggle.setToggleGroup(instructorGroup);
+        emmaToggle.setToggleGroup(instructorGroup);
+
+        //classAttendance tab assigning the locations radio buttons to the group
+        classBridgewaterToggle.setToggleGroup(classAttendanceGroupLocation);
+        classEdisonToggle.setToggleGroup(classAttendanceGroupLocation);
+        classFranklinToggle.setToggleGroup(classAttendanceGroupLocation);
+        classPiscatawayToggle.setToggleGroup(classAttendanceGroupLocation);
+        classSomervilleToggle.setToggleGroup(classAttendanceGroupLocation);
+
 
         // Populate the ComboBox with values from 0 to 3
         guestPass.getItems().clear(); // Clear existing items if any
