@@ -220,7 +220,7 @@
                                <Insets left="250.0" />
                            </GridPane.margin>
                        </TextField>
-                       <TextField fx:id="classGuestPasses" maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                       <TextField fx:id="classGuestPasses" editable="false" maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <GridPane.margin>
                                <Insets left="390.0" />
                            </GridPane.margin>
@@ -231,18 +231,18 @@
                                <Insets left="250.0" />
                            </GridPane.margin>
                        </Label>
-                       <Button mnemonicParsing="false" text="Add Member " GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                       <Button mnemonicParsing="false" text="Remove Member" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                       <Button mnemonicParsing="false" onAction="#onclickRegisterMemberClass" text="Add Member " GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                       <Button mnemonicParsing="false" onAction="#onclickUnregisterMemberClass" text="Remove Member" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <GridPane.margin>
                                <Insets left="100.0" />
                            </GridPane.margin>
                        </Button>
-                       <Button mnemonicParsing="false" text="Add Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                       <Button mnemonicParsing="false" onAction="#onclickRegisterGuestClass" text="Add Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <GridPane.margin>
                                <Insets left="220.0" />
                            </GridPane.margin>
                        </Button>
-                       <Button mnemonicParsing="false" text="Remove Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                       <Button mnemonicParsing="false" onAction="#onclickUnregisterGuestClass" text="Remove Guest" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <GridPane.margin>
                                <Insets left="305.0" />
                            </GridPane.margin>
@@ -274,7 +274,6 @@
                            <TableColumn fx:id="col_city" prefWidth="218.14080810546875" text="City" />
                            <TableColumn fx:id="col_county" prefWidth="286.3592071533203" text="County" />
                            <TableColumn fx:id="col_zip" prefWidth="233.48895263671875" text="Zip Code" />
-                           <TableColumn fx:id="col_city1" prefWidth="218.14080810546875" text="City" />
                        </columns>
                    </TableView>
                </AnchorPane>

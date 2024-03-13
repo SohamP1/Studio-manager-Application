@@ -320,4 +320,78 @@ public class StudioManagerController {
             outputArea.setText("Error loading initial files: " + e.getMessage());
         }
     }
+
+
+    /**
+     * Class Attendance TAB
+     */
+    //Radio buttons to interact and reference
+    private final RadioButton selectedClass = (RadioButton) classGroup.getSelectedToggle();
+    private final String className = selectedClass != null ? selectedClass.getText() : "";
+
+    private final RadioButton selectedInstructor = (RadioButton) instructorGroup.getSelectedToggle();
+    private final String instructorName = selectedInstructor != null ? selectedInstructor.getText() : "";
+
+    private final RadioButton selectedLocation = (RadioButton) classAttendanceGroupLocation.getSelectedToggle();
+    private final String locationName = selectedLocation != null ? selectedLocation.getText() : "";
+
+
+    private boolean validateClassAttendanceInput() {
+        // Validate text fields are not empty
+        String firstName = classFirstname.getText().trim();
+        String lastName = classLastname.getText().trim();
+        LocalDate attendanceDate = classAttendanceDate.getValue();
+
+        if (firstName.isEmpty()) {
+            outputArea.setText("First name is required for class attendance.");
+            return false;
+        }
+
+        if (lastName.isEmpty()) {
+            outputArea.setText("Last name is required for class attendance.");
+            return false;
+        }
+
+        if (attendanceDate == null) {
+            outputArea.setText("Date of attendance is required.");
+            return false;
+        }
+
+        // Validate that a radio button is selected in each ToggleGroup
+        if (classGroup.getSelectedToggle() == null) {
+            outputArea.setText("Please select a class.");
+            return false;
+        }
+
+        if (instructorGroup.getSelectedToggle() == null) {
+            outputArea.setText("Please select an instructor.");
+            return false;
+        }
+
+        if (classAttendanceGroupLocation.getSelectedToggle() == null) {
+            outputArea.setText("Please select a location for the class.");
+            return false;
+        }
+
+        // If all validations pass
+        return true;
+    }
+
+    public void onclickRegisterMemberClass(ActionEvent actionEvent) {
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+    }
+
+    public void onclickUnregisterMemberClass(ActionEvent actionEvent) {
+    }
+
+    public void onclickRegisterGuestClass(ActionEvent actionEvent) {
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+    }
+
+    public void onclickUnregisterGuestClass(ActionEvent actionEvent) {
+    }
 }
