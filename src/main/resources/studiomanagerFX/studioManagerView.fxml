@@ -263,7 +263,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
+                        <TableView fx:id="class_schedule_table" layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
                           <columns>
                             <TableColumn fx:id="col_time" prefWidth="98.20343589782715" text="Time" />
                             <TableColumn fx:id="col_class_name" prefWidth="132.0385284423828" text="Class Name" />
@@ -271,7 +271,7 @@
                               <TableColumn fx:id="col_studio_location" prefWidth="384.8287353515625" text="Studio Location" />
                           </columns>
                         </TableView>
-                        <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
+                        <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" onAction="#onclickLoadSchedule" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
                         <TextArea fx:id="outputArea1" layoutX="17.0" layoutY="369.0" prefHeight="282.0" prefWidth="770.0" style="-fx-border-color: black;" />
                      </children></AnchorPane>
                </content>
@@ -285,7 +285,6 @@
                             <TableColumn fx:id="col_city" prefWidth="218.14080810546875" text="City" />
                             <TableColumn fx:id="col_county" prefWidth="286.3592071533203" text="County" />
                               <TableColumn fx:id="col_zip" prefWidth="233.48895263671875" text="Zip Code" />
-                              <TableColumn fx:id="col_city1" prefWidth="218.14080810546875" text="City" />
                           </columns>
                         </TableView>
                      </children></AnchorPane>

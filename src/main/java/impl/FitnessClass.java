@@ -49,6 +49,8 @@ public class FitnessClass {
         this.guests = new MemberList();
     }
 
+
+
     /**
      * Retrieves the type of fitness class offered.
      *
