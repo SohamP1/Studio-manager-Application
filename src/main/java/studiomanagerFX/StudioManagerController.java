@@ -54,7 +54,7 @@ public class StudioManagerController {
     @FXML
     public TextField classLastname;
     @FXML
-    public TextField classGuestPasses;
+    public TextArea classGuestPasses;
     @FXML
     public DatePicker classAttendanceDob;
 
@@ -335,6 +335,7 @@ public class StudioManagerController {
      * Class Attendance TAB
      */
 
+    //getting radio buttons text value in class Attendance tab
     private String getSelectedClass() {
         RadioButton selected = (RadioButton) classGroup.getSelectedToggle();
         return selected != null ? selected.getText() : "";
@@ -391,17 +392,17 @@ public class StudioManagerController {
         // If all validations pass
         return true;
     }
-
+//////////////////////////////// Register Member //////////////////////////////////////////
     public void onclickRegisterMemberClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
             return; // Stop processing as validation failed
         }
         Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
-        Profile profile = new Profile(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+        Profile profile = new Profile(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
         Member member = retrieveMember(profile);
         if (member == null) {
-            printMemberNotFound(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+            printMemberNotFound(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
             return;
         }
         if (isMembershipExpired(member)) {
@@ -575,7 +576,7 @@ public class StudioManagerController {
         member.registerClass(fitnessClass);
     }
 
-
+    //////////////////////////////// Unregister Member //////////////////////////////////////////
     public void onclickUnregisterMemberClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
@@ -625,19 +626,184 @@ public class StudioManagerController {
         clearClassAttendanceInputs();
     }
 
-
+//////////////////////////  Register Guest and Remove Guest //////////////////////////////
     public void onclickRegisterGuestClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
             return; // Stop processing as validation failed
         }
+        Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
+        Profile profile = new Profile(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+        Member member = retrieveMember(profile);
+        if (member == null) {
+            printMemberNotFound(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+            return;
+        }
+        if (isMembershipExpired(member)) {
+            return;
+        }
+        if (!isValidHomeStudio(member, getSelectedLocation())) {
+            return;
+        }
+        FitnessClass fitnessClass = findFitnessClass(getSelectedClass(), getSelectedInstructor(), getSelectedLocation());
+        if (fitnessClass == null) {
+            printClassDoesNotExist(getSelectedClass(), getSelectedInstructor(), getSelectedLocation());
+            return;
+        }
+        if (isMemberAlreadyRegistered(fitnessClass, member)) {
+            return;
+        }
+        if (hasTimeConflict(fitnessClass, member)) {
+            return;
+        }
+        handleGuestRegistration(member, fitnessClass, getSelectedLocation());
         clearClassAttendanceInputs();
+    }
+    /**
+     * Handles the registration of a guest in a fitness class, considering membership type and guest pass availability.
+     * It enforces studio policies on guest attendance, including location restrictions and guest pass usage.
+     *
+     * @param member The member who is bringing the guest.
+     * @param fitnessClass The class in which the guest is to be registered.
+     * @param studioName The name of the studio where the class is held.
+     */
+    private void handleGuestRegistration(Member member, FitnessClass fitnessClass, String studioName) {
+        String zip = fitnessClass.getStudio().getZipCode();
+        String county = fitnessClass.getStudio().getCounty();
+        Location homeStudio = member.getHomeStudio();
+
+        if (member instanceof Basic) {
+            outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " [BASIC] - no guest pass.");
+            return;
+        }
+
+        if (member instanceof Family) {
+            handleFamilyGuest(member, fitnessClass, studioName, homeStudio, zip, county);
+
+        } else if (member instanceof Premium) {
+            handlePremiumGuest(member, fitnessClass, studioName, homeStudio, zip, county);
+            String guestPasses = String.valueOf(((Premium) member).getGuestPass());
+            classGuestPasses.setText(guestPasses);
+        }
+    }
+    /**
+     * Processes the attendance of a family member's guest, including validation of guest passes and
+     * registration in the class. This method updates both the member's and the class's records.
+     *
+     * @param member The family member bringing the guest.
+     * @param fitnessClass The fitness class the guest will attend.
+     * @param zip The zip code of the studio where the class is held.
+     * @param county The county of the studio.
+     */
+    private void handleFamilyGuest(Member member, FitnessClass fitnessClass, String studioName, Location homeStudio, String zip, String county) {
+        if (studioName.equalsIgnoreCase(homeStudio.name()) && ((Family) member).hasGuestPass()) {
+            processGuestAttendance(fitnessClass, member, zip, county);
+        } else {
+            if (!((Family) member).hasGuestPass()) {
+                outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " guest pass not available.");
+                classGuestPasses.setText("0");
+            } else {
+                printGuestHomeStudioMismatch(member, studioName);
+                classGuestPasses.setText("1");
+            }
+        }
+    }
+
+    /**
+     * Processes the attendance of a premium member's guest, applying similar validations as for family guests.
+     * Premium membership often includes more flexible guest pass usage.
+     *
+     * @param member The premium member bringing the guest.
+     * @param fitnessClass The fitness class the guest will attend.
+     * @param zip The zip code of the studio.
+     * @param county The county of the studio.
+     */
+    private void handlePremiumGuest(Member member, FitnessClass fitnessClass, String studioName, Location homeStudio, String zip, String county) {
+        if (studioName.equalsIgnoreCase(homeStudio.name()) && ((Premium) member).hasGuestPass()) {
+            processGuestAttendance(fitnessClass, member, zip, county);
+        } else {
+            if (!((Premium) member).hasGuestPass()) {
+                outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " guest pass not available.");
+            } else {
+                printGuestHomeStudioMismatch(member, studioName);
+            }
+        }
+    }
+    /**
+     * Records the attendance of a guest in a class, ensuring the guest pass is properly utilized and marked.
+     * This method updates the fitness class and member records to reflect the guest's attendance.
+     *
+     * @param fitnessClass The class where the guest's attendance is recorded.
+     * @param member The member who is bringing the guest.
+     * @param zip The zip code of the studio where the class is held.
+     * @param county The county of the studio.
+     */
+    private void processGuestAttendance(FitnessClass fitnessClass, Member member, String zip, String county) {
+        if (member instanceof Family) {
+            ((Family) member).takeAttendanceOfGuest();
+        } else if (member instanceof Premium) {
+            ((Premium) member).takeAttendanceOfGuest();
+        }
+        outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
+                " (guest) attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
+        fitnessClass.addGuest(member);
+        member.registerClass(fitnessClass);
+        classGuestPasses.setText("1");
+    }
+
+    /**
+     * Prints a message indicating a mismatch between the guest's intended class location and the member's home studio.
+     * This can occur when studio policies restrict guest attendance based on the member's home studio.
+     *
+     * @param member The member attempting to bring a guest.
+     * @param studioName The name of the studio where the class is held.
+     */
+    private void printGuestHomeStudioMismatch(Member member, String studioName) {
+        outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
+                " (guest) is attending a class at " + studioName.toUpperCase() +
+                " - home studio at " + member.getHomeStudio().getCity().toUpperCase());
     }
 
     public void onclickUnregisterGuestClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
             return; // Stop processing as validation failed
+        }
+
+        // Assuming classAttendanceDob is correctly defined and accessible here
+        Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
+        Profile profile = new Profile(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
+
+        // Ensure member is not null before proceeding
+        Member member = memberList.retrieveMember(profile);
+        if (member == null) {
+            outputArea.setText("Member not found.");
+            return;
+        }
+
+        FitnessClass fitnessClass = schedule.findClassByCriteria(
+                Offer.valueOf(getSelectedClass().toUpperCase()),
+                Instructor.valueOf(getSelectedInstructor().toUpperCase()),
+                Location.valueOf(getSelectedLocation().toUpperCase())
+        );
+
+        // Check if fitnessClass is not null before proceeding
+        if (fitnessClass == null) {
+            outputArea.setText("Class not found.");
+            return;
+        }
+        String time = fitnessClass.getTime().toString();
+        member.unregisterClass(fitnessClass);
+        if (fitnessClass.removeGuest(member)) {
+            if (member instanceof Family) {
+                ((Family) member).removeAttendanceOfGuest();
+                outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is removed from " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
+            } else if (member instanceof Premium) {
+                ((Premium) member).removeGuest();
+                outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is removed from " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
+            }
+        } else {
+            outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is not in " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
         }
         clearClassAttendanceInputs();
     }
