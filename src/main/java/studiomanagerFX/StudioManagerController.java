@@ -220,22 +220,24 @@ public class StudioManagerController {
         // Now, based on the member type, create and add the member
         switch (memberType) {
             case "Basic" -> {
-                if (dobCustom != null && location != null) {
+                if (dobCustom != null && location != null && guestPass.getValue() ==0) {
                     Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                     Date expire = Date.getCurrentDate().calculateOneMonthLater();
                     Basic newMember = new Basic(profile, expire, location);
                     addBasicMemberToDatabaseForBasic(newMember);
                     clearMembershipInputs();
                 }
+                else{outputArea.setText("Basic Members Do not Offer Guest Passes");}
             }
             case "Family" -> {
-                if (dobCustom != null && location != null) {
+                if (dobCustom != null && location != null&& guestPass.getValue()==0 || guestPass.getValue()==1) {
                     Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                     Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
                     Family newMember = new Family(profile, expire, location);
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
                 }
+                else{outputArea.setText("Family Members can have max 1 Guest Pass");}
             }
             case "Premium" -> {
                 if (dobCustom != null && location != null) {
@@ -633,10 +635,10 @@ public class StudioManagerController {
             return; // Stop processing as validation failed
         }
         Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
-        Profile profile = new Profile(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+        Profile profile = new Profile(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
         Member member = retrieveMember(profile);
         if (member == null) {
-            printMemberNotFound(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+            printMemberNotFound(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
             return;
         }
         if (isMembershipExpired(member)) {
