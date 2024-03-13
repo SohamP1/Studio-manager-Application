@@ -230,10 +230,16 @@ public class StudioManagerController {
                 else{outputArea.setText("Basic Members Do not Offer Guest Passes");}
             }
             case "Family" -> {
-                if (dobCustom != null && location != null&& guestPass.getValue()==0 || guestPass.getValue()==1) {
-                    Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
-                    Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
-                    Family newMember = new Family(profile, expire, location);
+                Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
+                Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
+                Family newMember = new Family(profile, expire, location);
+                if (dobCustom != null && location != null&& guestPass.getValue()==0) {
+                    newMember.takeAttendanceOfGuest(); // setting false cause 0 guest
+                    addFamilyMemberToDatabase(newMember);
+                    clearMembershipInputs();
+                }
+                if (dobCustom != null && location != null&& guestPass.getValue()==1) {
+                    newMember.removeAttendanceOfGuest(); // setting true cause 1 guest
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
                 }
