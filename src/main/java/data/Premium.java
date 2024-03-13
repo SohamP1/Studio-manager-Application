@@ -33,7 +33,6 @@ public class Premium extends Member {
      */
     public Premium(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
-        this.guestPass = 3;
     }
 
     /**
@@ -119,5 +118,17 @@ public class Premium extends Member {
                 this.getHomeStudio().getZipCode(),
                 this.getHomeStudio().getCounty().toUpperCase(),
                 guestPassStatus);
+    }
+
+    /**
+     * Sets the number of guest passes available to a premium member.
+     * This method updates the number of guest passes a premium member can use. Guest passes allow
+     * premium members to bring guests to the facility, providing flexibility and added value to the
+     * membership.
+     *
+     * @param guestPass the number of guest passes to be set for the premium member. Must be non-negative.
+     */
+    public void setGuestPass(int guestPass) {
+        this.guestPass = guestPass;
     }
 }
