@@ -78,9 +78,9 @@ public class StudioManagerController {
     @FXML
     private RadioButton bridgewaterToggle, edisonToggle, franklinToggle, piscatawayToggle, somervilleToggle;
     @FXML
-    private RadioButton pilatesToggle,spinningToggle,cardioToggle;
+    private RadioButton pilatesToggle, spinningToggle, cardioToggle;
     @FXML
-    private RadioButton jeniferToggle,kimToggle,deniseToggle,davisToggle,emmaToggle;
+    private RadioButton jeniferToggle, kimToggle, deniseToggle, davisToggle, emmaToggle;
     @FXML
     private RadioButton classBridgewaterToggle, classEdisonToggle, classFranklinToggle, classPiscatawayToggle, classSomervilleToggle;
 
@@ -142,7 +142,7 @@ public class StudioManagerController {
         studio_location_table.setItems(locations);
     }
 
-    private boolean  validateMembershipInput() {
+    private boolean validateMembershipInput() {
         String firstName = firstname.getText().trim();
         String lastName = lastname.getText().trim();
         LocalDate dobLocalDate = dateOfBirth.getValue();
@@ -172,6 +172,7 @@ public class StudioManagerController {
         }
         return true;
     }
+
     private Date createDateFromLocalDate(LocalDate dobLocalDate) {
         Date dob;
         try {
@@ -235,30 +236,31 @@ public class StudioManagerController {
         // Now, based on the member type, create and add the member
         switch (memberType) {
             case "Basic" -> {
-                if (dobCustom != null && location != null && guestPass.getValue() ==0) {
+                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
                     Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                     Date expire = Date.getCurrentDate().calculateOneMonthLater();
                     Basic newMember = new Basic(profile, expire, location);
                     addBasicMemberToDatabaseForBasic(newMember);
                     clearMembershipInputs();
+                } else {
+                    outputArea.setText("Basic Members Do not Offer Guest Passes");
                 }
-                else{outputArea.setText("Basic Members Do not Offer Guest Passes");}
             }
             case "Family" -> {
                 Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                 Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
                 Family newMember = new Family(profile, expire, location);
-                if (dobCustom != null && location != null&& guestPass.getValue()==0) {
+                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
                     newMember.takeAttendanceOfGuest(); // setting false cause 0 guest
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
-                }
-                else if (dobCustom != null && location != null&& guestPass.getValue()==1) {
+                } else if (dobCustom != null && location != null && guestPass.getValue() == 1) {
                     newMember.removeAttendanceOfGuest(); // setting true cause 1 guest
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
+                } else {
+                    outputArea.setText("Family Members can have max 1 Guest Pass");
                 }
-                else{outputArea.setText("Family Members can have max 1 Guest Pass");}
             }
             case "Premium" -> {
                 if (dobCustom != null && location != null) {
@@ -415,7 +417,8 @@ public class StudioManagerController {
         // If all validations pass
         return true;
     }
-//////////////////////////////// Register Member //////////////////////////////////////////
+
+    //////////////////////////////// Register Member //////////////////////////////////////////
     public void onclickRegisterMemberClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
@@ -448,6 +451,7 @@ public class StudioManagerController {
         recordAttendance(fitnessClass, member);
         clearClassAttendanceInputs();
     }
+
     //clear the inputs after registration
     private void clearClassAttendanceInputs() {
         classFirstname.clear();
@@ -457,6 +461,7 @@ public class StudioManagerController {
         instructorGroup.getSelectedToggle().setSelected(false);
         classAttendanceGroupLocation.getSelectedToggle().setSelected(false);
     }
+
     //clear the inputs after registration
     private void clearMembershipInputs() {
         firstname.clear();
@@ -465,6 +470,7 @@ public class StudioManagerController {
         memberTypeGroup.getSelectedToggle().setSelected(false);
         homeStudioGroup.getSelectedToggle().setSelected(false);
     }
+
     /**
      * Retrieves a member from the member list based on the provided profile.
      *
@@ -479,7 +485,7 @@ public class StudioManagerController {
      * Prints a message indicating that the member was not found in the database.
      *
      * @param firstName The first name of the member.
-     * @param lastName The last name of the member.
+     * @param lastName  The last name of the member.
      * @param dobString The date of birth of the member.
      */
     private void printMemberNotFound(String firstName, String lastName, Date dobString) {
@@ -504,7 +510,7 @@ public class StudioManagerController {
     /**
      * Validates if the member's home studio matches the specified studio for attending a class.
      *
-     * @param member The member to validate.
+     * @param member     The member to validate.
      * @param studioName The name of the studio where the class is held.
      * @return true if the home studio matches or the condition is not applicable, false otherwise.
      */
@@ -518,32 +524,35 @@ public class StudioManagerController {
         }
         return true;
     }
+
     /**
      * Finds a fitness class based on the specified criteria.
      *
-     * @param className The name of the class.
+     * @param className      The name of the class.
      * @param instructorName The name of the instructor.
-     * @param studioName The name of the studio.
+     * @param studioName     The name of the studio.
      * @return The FitnessClass instance if found, null otherwise.
      */
     private FitnessClass findFitnessClass(String className, String instructorName, String studioName) {
         return schedule.findClassByCriteria(Offer.valueOf(className.toUpperCase()), Instructor.valueOf(instructorName.toUpperCase()), Location.valueOf(studioName.toUpperCase()));
     }
+
     /**
      * Prints a message indicating that the specified fitness class does not exist.
      *
-     * @param className The name of the class.
+     * @param className      The name of the class.
      * @param instructorName The name of the instructor.
-     * @param studioName The name of the studio.
+     * @param studioName     The name of the studio.
      */
     private void printClassDoesNotExist(String className, String instructorName, String studioName) {
         outputArea.setText(className + " by " + instructorName + " does not exist at " + studioName);
     }
+
     /**
      * Checks if a member is already registered in the specified class.
      *
      * @param fitnessClass The class to check for member registration.
-     * @param member The member to check.
+     * @param member       The member to check.
      * @return true if the member is already registered, false otherwise.
      */
     private boolean isMemberAlreadyRegistered(FitnessClass fitnessClass, Member member) {
@@ -553,11 +562,12 @@ public class StudioManagerController {
         }
         return false;
     }
+
     /**
      * Checks for a time conflict between the member's existing class registrations and the new class.
      *
      * @param fitnessClass The new class the member wishes to attend.
-     * @param member The member to check for time conflicts.
+     * @param member       The member to check for time conflicts.
      * @return true if there is a time conflict, false otherwise.
      */
     private boolean hasTimeConflict(FitnessClass fitnessClass, Member member) {
@@ -569,6 +579,7 @@ public class StudioManagerController {
         }
         return false;
     }
+
     /**
      * Utility method to format time for printing. Removes leading zeros and formats time in a human-readable format.
      *
@@ -581,11 +592,12 @@ public class StudioManagerController {
         }
         return time;
     }
+
     /**
      * Records attendance for a member in a fitness class.
      *
      * @param fitnessClass The class where the member's attendance is to be recorded.
-     * @param member The member attending the class.
+     * @param member       The member attending the class.
      */
     private void recordAttendance(FitnessClass fitnessClass, Member member) {
         String zip = fitnessClass.getStudio().getZipCode();
@@ -649,7 +661,7 @@ public class StudioManagerController {
         clearClassAttendanceInputs();
     }
 
-//////////////////////////  Register Guest and Remove Guest //////////////////////////////
+    //////////////////////////  Register Guest and Remove Guest //////////////////////////////
     public void onclickRegisterGuestClass(ActionEvent actionEvent) {
         outputArea.clear();
         if (!validateClassAttendanceInput()) {
@@ -682,13 +694,14 @@ public class StudioManagerController {
         handleGuestRegistration(member, fitnessClass, getSelectedLocation());
         clearClassAttendanceInputs();
     }
+
     /**
      * Handles the registration of a guest in a fitness class, considering membership type and guest pass availability.
      * It enforces studio policies on guest attendance, including location restrictions and guest pass usage.
      *
-     * @param member The member who is bringing the guest.
+     * @param member       The member who is bringing the guest.
      * @param fitnessClass The class in which the guest is to be registered.
-     * @param studioName The name of the studio where the class is held.
+     * @param studioName   The name of the studio where the class is held.
      */
     private void handleGuestRegistration(Member member, FitnessClass fitnessClass, String studioName) {
         String zip = fitnessClass.getStudio().getZipCode();
@@ -709,14 +722,15 @@ public class StudioManagerController {
             classGuestPasses.setText(guestPasses);
         }
     }
+
     /**
      * Processes the attendance of a family member's guest, including validation of guest passes and
      * registration in the class. This method updates both the member's and the class's records.
      *
-     * @param member The family member bringing the guest.
+     * @param member       The family member bringing the guest.
      * @param fitnessClass The fitness class the guest will attend.
-     * @param zip The zip code of the studio where the class is held.
-     * @param county The county of the studio.
+     * @param zip          The zip code of the studio where the class is held.
+     * @param county       The county of the studio.
      */
     private void handleFamilyGuest(Member member, FitnessClass fitnessClass, String studioName, Location homeStudio, String zip, String county) {
         if (studioName.equalsIgnoreCase(homeStudio.name()) && ((Family) member).hasGuestPass()) {
@@ -736,10 +750,10 @@ public class StudioManagerController {
      * Processes the attendance of a premium member's guest, applying similar validations as for family guests.
      * Premium membership often includes more flexible guest pass usage.
      *
-     * @param member The premium member bringing the guest.
+     * @param member       The premium member bringing the guest.
      * @param fitnessClass The fitness class the guest will attend.
-     * @param zip The zip code of the studio.
-     * @param county The county of the studio.
+     * @param zip          The zip code of the studio.
+     * @param county       The county of the studio.
      */
     private void handlePremiumGuest(Member member, FitnessClass fitnessClass, String studioName, Location homeStudio, String zip, String county) {
         if (studioName.equalsIgnoreCase(homeStudio.name()) && ((Premium) member).hasGuestPass()) {
@@ -752,14 +766,15 @@ public class StudioManagerController {
             }
         }
     }
+
     /**
      * Records the attendance of a guest in a class, ensuring the guest pass is properly utilized and marked.
      * This method updates the fitness class and member records to reflect the guest's attendance.
      *
      * @param fitnessClass The class where the guest's attendance is recorded.
-     * @param member The member who is bringing the guest.
-     * @param zip The zip code of the studio where the class is held.
-     * @param county The county of the studio.
+     * @param member       The member who is bringing the guest.
+     * @param zip          The zip code of the studio where the class is held.
+     * @param county       The county of the studio.
      */
     private void processGuestAttendance(FitnessClass fitnessClass, Member member, String zip, String county) {
         if (member instanceof Family) {
@@ -778,7 +793,7 @@ public class StudioManagerController {
      * Prints a message indicating a mismatch between the guest's intended class location and the member's home studio.
      * This can occur when studio policies restrict guest attendance based on the member's home studio.
      *
-     * @param member The member attempting to bring a guest.
+     * @param member     The member attempting to bring a guest.
      * @param studioName The name of the studio where the class is held.
      */
     private void printGuestHomeStudioMismatch(Member member, String studioName) {
@@ -853,6 +868,7 @@ public class StudioManagerController {
         Stage stage = (Stage) outputArea.getScene().getWindow(); // Assuming outputArea is a UI component
         return fileChooser.showOpenDialog(stage);
     }
+
     @FXML
     protected void onclickLoadSchedule(ActionEvent event) {
         File file = chooseFile(); // Implement a method to choose a file
@@ -891,23 +907,25 @@ public class StudioManagerController {
     protected void onclickPrintbyCounty(ActionEvent event) {
 
     }
+
     @FXML
     protected void onclickPrintWithNextDues(ActionEvent event) {
 
     }
+
     @FXML
     protected void onclickShowSchedule(ActionEvent event) {
 
     }
+
     @FXML
     protected void onclickShowAttendees(ActionEvent event) {
 
     }
+
     @FXML
     protected void onclickShowStudioLocations(ActionEvent event) {
 
     }
 
-
-
-    }
+}
