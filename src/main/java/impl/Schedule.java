@@ -183,5 +183,8 @@ public class Schedule {
         return false;
     }
 
+    public FitnessClass[] getClasses() {
+        return classes;
+    }
 
 }

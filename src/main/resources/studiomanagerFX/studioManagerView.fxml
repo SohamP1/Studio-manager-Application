@@ -5,6 +5,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -256,7 +259,7 @@
            </Tab>
            <Tab text="Class Schedule">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                   <TableView layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
+                   <TableView fx:id="class_schedule_table" layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
                        <columns>
                            <TableColumn fx:id="col_time" prefWidth="98.20343589782715" text="Time" />
                            <TableColumn fx:id="col_class_name" prefWidth="132.0385284423828" text="Class Name" />
@@ -264,7 +267,7 @@
                            <TableColumn fx:id="col_studio_location" prefWidth="384.8287353515625" text="Studio Location" />
                        </columns>
                    </TableView>
-                   <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
+                   <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" onAction="#onclickLoadSchedule" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
                </AnchorPane>
            </Tab>
            <Tab text="Studio Location">
@@ -279,7 +282,32 @@
                </AnchorPane>
            </Tab>
            <Tab text="Demo Only">
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <MenuBar layoutX="42.0" layoutY="14.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Member">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyProfile" text="Print by Profile" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyCounty" text="Print by County/Zipcode" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintWithNextDues" text="Print with next dues" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Fitness Classes">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations" text="Show Studio Locations" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Other">
+                        <items>
+                              <MenuItem mnemonicParsing="false" text="Clear TextArea" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children></AnchorPane>
            </Tab>
        </TabPane>
    </center>
