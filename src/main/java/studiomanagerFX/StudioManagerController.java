@@ -397,13 +397,11 @@ public class StudioManagerController {
         if (!validateClassAttendanceInput()) {
             return; // Stop processing as validation failed
         }
-        String firstName = classFirstname.getText().trim();
-        String lastName = classLastname.getText().trim();
         Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
-        Profile profile = new Profile(firstName, lastName, dobCustom);
+        Profile profile = new Profile(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
         Member member = retrieveMember(profile);
         if (member == null) {
-            printMemberNotFound(firstName, lastName, dobCustom);
+            printMemberNotFound(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
             return;
         }
         if (isMembershipExpired(member)) {
