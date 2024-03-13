@@ -238,7 +238,7 @@ public class StudioManagerController {
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
                 }
-                if (dobCustom != null && location != null&& guestPass.getValue()==1) {
+                else if (dobCustom != null && location != null&& guestPass.getValue()==1) {
                     newMember.removeAttendanceOfGuest(); // setting true cause 1 guest
                     addFamilyMemberToDatabase(newMember);
                     clearMembershipInputs();
