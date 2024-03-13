@@ -125,40 +125,37 @@ public class StudioManagerController {
         guestPass.getSelectionModel().selectFirst(); // Optionally select the first item by default
     }
 
-    private void validateMembershipInput() {
+    private boolean  validateMembershipInput() {
         String firstName = firstname.getText().trim();
         String lastName = lastname.getText().trim();
         LocalDate dobLocalDate = dateOfBirth.getValue();
 
         if (firstName.isEmpty()) {
             outputArea.setText("First name is required.");
-            return;
+            return false;
         }
 
         if (lastName.isEmpty()) {
             outputArea.setText("Last name is required.");
-            return;
+            return false;
         }
 
         if (dobLocalDate == null) {
             outputArea.setText("Date of birth is required.");
-            return;
+            return false;
         }
 
         if (memberTypeGroup.getSelectedToggle() == null) {
             outputArea.setText("Please select a member type.");
-            return;
+            return false;
         }
 
         if (homeStudioGroup.getSelectedToggle() == null) {
             outputArea.setText("Please select a home studio.");
         }
+        return true;
     }
     private Date createDateFromLocalDate(LocalDate dobLocalDate) {
-        if (dobLocalDate == null) {
-            outputArea.setText("Date of birth is not specified.");
-            return null;
-        }
         Date dob;
         try {
             // Convert LocalDate to your custom Date format
@@ -203,7 +200,9 @@ public class StudioManagerController {
     @FXML
     protected void onclickAddmember(ActionEvent event) {
         // First, validate the input
-        validateMembershipInput();
+        if (!validateMembershipInput()) {
+            return; // Stop execution as validation failed
+        }
 
         RadioButton selectedMemberType = (RadioButton) memberTypeGroup.getSelectedToggle();
         String memberType = selectedMemberType != null ? selectedMemberType.getText() : "";
@@ -294,7 +293,9 @@ public class StudioManagerController {
 
     @FXML
     protected void onclickCancelMembership(ActionEvent event) {
-        validateMembershipInput();
+        if (!validateMembershipInput()) {
+            return; // Stop execution as validation failed
+        }
         Date dobCustom = createDateFromLocalDate(dateOfBirth.getValue());
         Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
 
