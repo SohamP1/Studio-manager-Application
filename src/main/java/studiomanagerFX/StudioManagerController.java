@@ -1,7 +1,9 @@
 package studiomanagerFX;
 
 import data.*;
+import enums.Instructor;
 import enums.Location;
+import enums.Offer;
 import impl.FitnessClass;
 import impl.MemberList;
 import impl.Schedule;
@@ -54,7 +56,7 @@ public class StudioManagerController {
     @FXML
     public TextField classGuestPasses;
     @FXML
-    public DatePicker classAttendanceDate;
+    public DatePicker classAttendanceDob;
 
     @FXML
     private TableView<Location> studio_location_table;
@@ -199,6 +201,7 @@ public class StudioManagerController {
 
     @FXML
     protected void onclickAddmember(ActionEvent event) {
+        outputArea.clear();
         // First, validate the input
         if (!validateMembershipInput()) {
             return; // Stop execution as validation failed
@@ -222,6 +225,7 @@ public class StudioManagerController {
                     Date expire = Date.getCurrentDate().calculateOneMonthLater();
                     Basic newMember = new Basic(profile, expire, location);
                     addBasicMemberToDatabaseForBasic(newMember);
+                    clearMembershipInputs();
                 }
             }
             case "Family" -> {
@@ -230,6 +234,7 @@ public class StudioManagerController {
                     Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
                     Family newMember = new Family(profile, expire, location);
                     addFamilyMemberToDatabase(newMember);
+                    clearMembershipInputs();
                 }
             }
             case "Premium" -> {
@@ -239,6 +244,7 @@ public class StudioManagerController {
                     Premium newMember = new Premium(profile, expire, location);
                     newMember.setGuestPass(guestPass.getValue());
                     addPremiumMemberToDatabase(newMember);
+                    clearMembershipInputs();
                 }
             }
         }
@@ -293,6 +299,7 @@ public class StudioManagerController {
 
     @FXML
     protected void onclickCancelMembership(ActionEvent event) {
+        outputArea.clear();
         if (!validateMembershipInput()) {
             return; // Stop execution as validation failed
         }
@@ -307,11 +314,13 @@ public class StudioManagerController {
         } else {
             outputArea.setText(firstname.getText() + " " + lastname.getText() + " is not in the member database.");
         }
+        clearMembershipInputs();
     }
 
 
     @FXML
     protected void onclickLoadMembers() {
+        outputArea.clear();
         try {
             memberList.load(new File("src/main/java/test/memberList.txt"));
             schedule.load(new File("src/main/java/test/classSchedule.txt"));
@@ -319,5 +328,317 @@ public class StudioManagerController {
         } catch (FileNotFoundException e) {
             outputArea.setText("Error loading initial files: " + e.getMessage());
         }
+    }
+
+
+    /**
+     * Class Attendance TAB
+     */
+
+    private String getSelectedClass() {
+        RadioButton selected = (RadioButton) classGroup.getSelectedToggle();
+        return selected != null ? selected.getText() : "";
+    }
+
+    private String getSelectedInstructor() {
+        RadioButton selected = (RadioButton) instructorGroup.getSelectedToggle();
+        return selected != null ? selected.getText() : "";
+    }
+
+    private String getSelectedLocation() {
+        RadioButton selected = (RadioButton) classAttendanceGroupLocation.getSelectedToggle();
+        return selected != null ? selected.getText() : "";
+    }
+
+
+    private boolean validateClassAttendanceInput() {
+        // Validate text fields are not empty
+        String firstName = classFirstname.getText().trim();
+        String lastName = classLastname.getText().trim();
+        LocalDate attendanceDate = classAttendanceDob.getValue();
+
+        if (firstName.isEmpty()) {
+            outputArea.setText("First name is required for class attendance.");
+            return false;
+        }
+
+        if (lastName.isEmpty()) {
+            outputArea.setText("Last name is required for class attendance.");
+            return false;
+        }
+
+        if (attendanceDate == null) {
+            outputArea.setText("Date of Birth is required.");
+            return false;
+        }
+
+        // Validate that a radio button is selected in each ToggleGroup
+        if (classGroup.getSelectedToggle() == null) {
+            outputArea.setText("Please select a class.");
+            return false;
+        }
+
+        if (instructorGroup.getSelectedToggle() == null) {
+            outputArea.setText("Please select an instructor.");
+            return false;
+        }
+
+        if (classAttendanceGroupLocation.getSelectedToggle() == null) {
+            outputArea.setText("Please select a location for the class.");
+            return false;
+        }
+
+        // If all validations pass
+        return true;
+    }
+
+    public void onclickRegisterMemberClass(ActionEvent actionEvent) {
+        outputArea.clear();
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+        Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
+        Profile profile = new Profile(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+        Member member = retrieveMember(profile);
+        if (member == null) {
+            printMemberNotFound(classFirstname.getText().trim(), classFirstname.getText().trim(), dobCustom);
+            return;
+        }
+        if (isMembershipExpired(member)) {
+            return;
+        }
+        if (!isValidHomeStudio(member, getSelectedLocation())) {
+            return;
+        }
+        FitnessClass fitnessClass = findFitnessClass(getSelectedClass(), getSelectedInstructor(), getSelectedLocation());
+        if (fitnessClass == null) {
+            printClassDoesNotExist(getSelectedClass(), getSelectedInstructor(), getSelectedLocation());
+            return;
+        }
+        if (isMemberAlreadyRegistered(fitnessClass, member)) {
+            return;
+        }
+        if (hasTimeConflict(fitnessClass, member)) {
+            return;
+        }
+        recordAttendance(fitnessClass, member);
+        clearClassAttendanceInputs();
+    }
+    //clear the inputs after registration
+    private void clearClassAttendanceInputs() {
+        classFirstname.clear();
+        classLastname.clear();
+        classAttendanceDob.setValue(null);
+        classGroup.getSelectedToggle().setSelected(false);
+        instructorGroup.getSelectedToggle().setSelected(false);
+        classAttendanceGroupLocation.getSelectedToggle().setSelected(false);
+    }
+    //clear the inputs after registration
+    private void clearMembershipInputs() {
+        firstname.clear();
+        lastname.clear();
+        dateOfBirth.setValue(null);
+        memberTypeGroup.getSelectedToggle().setSelected(false);
+        homeStudioGroup.getSelectedToggle().setSelected(false);
+    }
+    /**
+     * Retrieves a member from the member list based on the provided profile.
+     *
+     * @param profile The profile to search for in the member list.
+     * @return The Member instance if found, null otherwise.
+     */
+    private Member retrieveMember(Profile profile) {
+        return memberList.retrieveMember(profile);
+    }
+
+    /**
+     * Prints a message indicating that the member was not found in the database.
+     *
+     * @param firstName The first name of the member.
+     * @param lastName The last name of the member.
+     * @param dobString The date of birth of the member.
+     */
+    private void printMemberNotFound(String firstName, String lastName, Date dobString) {
+        outputArea.setText(firstName + " " + lastName + " " + dobString + " is not in the member database.");
+    }
+
+    /**
+     * Checks if the member's membership has expired.
+     *
+     * @param member The member whose membership status is to be checked.
+     * @return true if the membership has expired, false otherwise.
+     */
+    private boolean isMembershipExpired(Member member) {
+        if (member.isMembershipExpired()) {
+            outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
+                    " " + member.getProfile().getDob() + " membership expired.");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Validates if the member's home studio matches the specified studio for attending a class.
+     *
+     * @param member The member to validate.
+     * @param studioName The name of the studio where the class is held.
+     * @return true if the home studio matches or the condition is not applicable, false otherwise.
+     */
+    private boolean isValidHomeStudio(Member member, String studioName) {
+        Location homeStudio = member.getHomeStudio();
+        if (member instanceof Basic && !studioName.equalsIgnoreCase(homeStudio.name())) {
+            outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
+                    " is attending a class at " + studioName.toUpperCase() + " - [" + member.getMembershipType() +
+                    "] home studio at " + member.getHomeStudio().getCity().toUpperCase());
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Finds a fitness class based on the specified criteria.
+     *
+     * @param className The name of the class.
+     * @param instructorName The name of the instructor.
+     * @param studioName The name of the studio.
+     * @return The FitnessClass instance if found, null otherwise.
+     */
+    private FitnessClass findFitnessClass(String className, String instructorName, String studioName) {
+        return schedule.findClassByCriteria(Offer.valueOf(className.toUpperCase()), Instructor.valueOf(instructorName.toUpperCase()), Location.valueOf(studioName.toUpperCase()));
+    }
+    /**
+     * Prints a message indicating that the specified fitness class does not exist.
+     *
+     * @param className The name of the class.
+     * @param instructorName The name of the instructor.
+     * @param studioName The name of the studio.
+     */
+    private void printClassDoesNotExist(String className, String instructorName, String studioName) {
+        outputArea.setText(className + " by " + instructorName + " does not exist at " + studioName);
+    }
+    /**
+     * Checks if a member is already registered in the specified class.
+     *
+     * @param fitnessClass The class to check for member registration.
+     * @param member The member to check.
+     * @return true if the member is already registered, false otherwise.
+     */
+    private boolean isMemberAlreadyRegistered(FitnessClass fitnessClass, Member member) {
+        if (fitnessClass.isMemberRegistered(member)) {
+            outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " is already in the class.");
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Checks for a time conflict between the member's existing class registrations and the new class.
+     *
+     * @param fitnessClass The new class the member wishes to attend.
+     * @param member The member to check for time conflicts.
+     * @return true if there is a time conflict, false otherwise.
+     */
+    private boolean hasTimeConflict(FitnessClass fitnessClass, Member member) {
+        if (schedule.checkForMemberTimeConflict(member, fitnessClass.getTime())) {
+            String time = fitnessClass.getTime().toString();
+            outputArea.setText("Time conflict - " + member.getProfile().getFname() + " " + member.getProfile().getLname() + " is in another class held at " + formatTime(time) + " - " +
+                    fitnessClass.getInstructor().name() + ", " + formatTime(time) + ", " + fitnessClass.getStudio().getCity().toUpperCase());
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Utility method to format time for printing. Removes leading zeros and formats time in a human-readable format.
+     *
+     * @param time The time string to format.
+     * @return A formatted time string.
+     */
+    private String formatTime(String time) {
+        if (time.startsWith("0")) {
+            return time.substring(1);
+        }
+        return time;
+    }
+    /**
+     * Records attendance for a member in a fitness class.
+     *
+     * @param fitnessClass The class where the member's attendance is to be recorded.
+     * @param member The member attending the class.
+     */
+    private void recordAttendance(FitnessClass fitnessClass, Member member) {
+        String zip = fitnessClass.getStudio().getZipCode();
+        String county = fitnessClass.getStudio().getCounty();
+        outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
+                " attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
+        if (member instanceof Basic) {
+            ((Basic) member).attendClass();
+        }
+        fitnessClass.addMember(member);
+        member.registerClass(fitnessClass);
+    }
+
+
+    public void onclickUnregisterMemberClass(ActionEvent actionEvent) {
+        outputArea.clear();
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+
+        // Assuming classAttendanceDob is correctly defined and accessible here
+        Date dobCustom = createDateFromLocalDate(classAttendanceDob.getValue());
+        Profile profile = new Profile(classFirstname.getText().trim(), classLastname.getText().trim(), dobCustom);
+
+        // Ensure member is not null before proceeding
+        Member member = memberList.retrieveMember(profile);
+        if (member == null) {
+            outputArea.setText("Member not found.");
+            return;
+        }
+
+        FitnessClass fitnessClass = schedule.findClassByCriteria(
+                Offer.valueOf(getSelectedClass().toUpperCase()),
+                Instructor.valueOf(getSelectedInstructor().toUpperCase()),
+                Location.valueOf(getSelectedLocation().toUpperCase())
+        );
+
+        // Check if fitnessClass is not null before proceeding
+        if (fitnessClass == null) {
+            outputArea.setText("Class not found.");
+            return;
+        }
+
+        String time = fitnessClass.getTime().toString();
+
+        if (fitnessClass.removeMember(member)) {
+            outputArea.setText(String.format("%s %s is removed from %s, %s, %s",
+                    classFirstname.getText().trim(),
+                    classLastname.getText().trim(),
+                    getSelectedInstructor().toUpperCase(),
+                    formatTime(time),
+                    fitnessClass.getStudio()));
+        } else {
+            outputArea.setText(String.format("%s %s is not in %s, %s, %s",
+                    classFirstname.getText().trim(),
+                    classLastname.getText().trim(),
+                    getSelectedInstructor().toUpperCase(),
+                    formatTime(time),
+                    fitnessClass.getStudio()));
+        }
+        clearClassAttendanceInputs();
+    }
+
+
+    public void onclickRegisterGuestClass(ActionEvent actionEvent) {
+        outputArea.clear();
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+        clearClassAttendanceInputs();
+    }
+
+    public void onclickUnregisterGuestClass(ActionEvent actionEvent) {
+        outputArea.clear();
+        if (!validateClassAttendanceInput()) {
+            return; // Stop processing as validation failed
+        }
+        clearClassAttendanceInputs();
     }
 }
