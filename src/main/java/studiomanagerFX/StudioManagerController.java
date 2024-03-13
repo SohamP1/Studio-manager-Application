@@ -7,9 +7,15 @@ import enums.Offer;
 import impl.FitnessClass;
 import impl.MemberList;
 import impl.Schedule;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 
 import java.io.File;
@@ -125,6 +131,15 @@ public class StudioManagerController {
             guestPass.getItems().add(i);
         }
         guestPass.getSelectionModel().selectFirst(); // Optionally select the first item by default
+
+        // Initialize columns in studio location tab
+        col_city.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getCity().toUpperCase()));
+        col_county.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getCounty().toUpperCase()));
+        col_zip.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getZipCode().toUpperCase()));
+
+        // Populate the table in studio location tab with Location enum values
+        ObservableList<Location> locations = FXCollections.observableArrayList(Location.values());
+        studio_location_table.setItems(locations);
     }
 
     private boolean  validateMembershipInput() {
@@ -326,17 +341,17 @@ public class StudioManagerController {
     }
 
 
-    @FXML
-    protected void onclickLoadMembers() {
-        outputArea.clear();
-        try {
-            memberList.load(new File("src/main/java/test/memberList.txt"));
-            schedule.load(new File("src/main/java/test/classSchedule.txt"));
-            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
-        } catch (FileNotFoundException e) {
-            outputArea.setText("Error loading initial files: " + e.getMessage());
-        }
-    }
+//    @FXML
+//    protected void onclickLoadMembers() {
+//        outputArea.clear();
+//        try {
+//            memberList.load(new File("src/main/java/test/memberList.txt"));
+//            schedule.load(new File("src/main/java/test/classSchedule.txt"));
+//            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
+//        } catch (FileNotFoundException e) {
+//            outputArea.setText("Error loading initial files: " + e.getMessage());
+//        }
+//    }
 
 
     /**
@@ -815,4 +830,84 @@ public class StudioManagerController {
         }
         clearClassAttendanceInputs();
     }
-}
+
+
+    @FXML
+    protected void onclickLoadMembers() {
+        try {
+            memberList.load(new File("src/main/java/test/memberList.txt"));
+            //   schedule.load(new File("src/main/java/test/classSchedule.txt"));
+            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
+        } catch (FileNotFoundException e) {
+            outputArea.setText("Error loading initial files: " + e.getMessage());
+        }
+    }
+
+    // Method to choose a file from the system
+    private File chooseFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Schedule File");
+        // Set initial directory, file extension filters, etc., if needed
+
+        // Show the open file dialog
+        Stage stage = (Stage) outputArea.getScene().getWindow(); // Assuming outputArea is a UI component
+        return fileChooser.showOpenDialog(stage);
+    }
+    @FXML
+    protected void onclickLoadSchedule(ActionEvent event) {
+        File file = chooseFile(); // Implement a method to choose a file
+        if (file != null) {
+            try {
+                loadFitnessClassesFromFile(file);
+            } catch (FileNotFoundException e) {
+                outputArea.setText("Error loading schedule file: " + e.getMessage());
+            }
+        }
+    }
+
+    private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
+        schedule.load(file);
+
+        // Clear existing items in the table
+        // class_schedule_table.getItems().clear();
+
+        // Iterate through the FitnessClass array and add each class to the table
+        for (FitnessClass fitnessClass : schedule.getClasses()) {
+            class_schedule_table.getItems().add(fitnessClass);
+        }
+        // Set cell value factories for each column
+        col_class_name.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClassInfo().toString()));
+        col_instructor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getInstructor().toString()));
+        col_time.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTime().toString()));
+        col_studio_location.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStudio().toString()));
+    }
+
+    @FXML
+    protected void onclickPrintbyProfile(ActionEvent event) {
+
+    }
+
+    @FXML
+    protected void onclickPrintbyCounty(ActionEvent event) {
+
+    }
+    @FXML
+    protected void onclickPrintWithNextDues(ActionEvent event) {
+
+    }
+    @FXML
+    protected void onclickShowSchedule(ActionEvent event) {
+
+    }
+    @FXML
+    protected void onclickShowAttendees(ActionEvent event) {
+
+    }
+    @FXML
+    protected void onclickShowStudioLocations(ActionEvent event) {
+
+    }
+
+
+
+    }
