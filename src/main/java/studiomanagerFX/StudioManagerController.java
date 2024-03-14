@@ -223,6 +223,7 @@ public class StudioManagerController {
             return; // Stop execution as validation failed
         }
 
+
         RadioButton selectedMemberType = (RadioButton) memberTypeGroup.getSelectedToggle();
         String memberType = selectedMemberType != null ? selectedMemberType.getText() : "";
 
@@ -231,17 +232,25 @@ public class StudioManagerController {
         String studioLocation = selectedStudioLocation != null ? selectedStudioLocation.getText() : "";
 
         Date dobCustom = createDateFromLocalDate(dateOfBirth.getValue());
+        if (dobCustom == null) {
+            // Since dobCustom validation and creation are happening inside createDateFromLocalDate, no further action needed here
+            return;
+        }
+
         Location location = createLocation(studioLocation);
+        if (location == null) {
+            // If the location is not valid, exit the method
+            return;
+        }
 
         // Now, based on the member type, create and add the member
         switch (memberType) {
             case "Basic" -> {
-                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
+                if (guestPass.getValue() == 0) {
                     Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                     Date expire = Date.getCurrentDate().calculateOneMonthLater();
                     Basic newMember = new Basic(profile, expire, location);
                     addBasicMemberToDatabaseForBasic(newMember);
-                    clearMembershipInputs();
                 } else {
                     outputArea.setText("Basic Members Do not Offer Guest Passes");
                 }
@@ -250,27 +259,22 @@ public class StudioManagerController {
                 Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
                 Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
                 Family newMember = new Family(profile, expire, location);
-                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
+                if (guestPass.getValue() == 0) {
                     newMember.takeAttendanceOfGuest(); // setting false cause 0 guest
                     addFamilyMemberToDatabase(newMember);
-                    clearMembershipInputs();
-                } else if (dobCustom != null && location != null && guestPass.getValue() == 1) {
+                } else if (guestPass.getValue() == 1) {
                     newMember.removeAttendanceOfGuest(); // setting true cause 1 guest
                     addFamilyMemberToDatabase(newMember);
-                    clearMembershipInputs();
                 } else {
                     outputArea.setText("Family Members can have max 1 Guest Pass");
                 }
             }
             case "Premium" -> {
-                if (dobCustom != null && location != null) {
-                    Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
-                    Date expire = Date.getCurrentDate().calculateTwelveMonthsLater();
-                    Premium newMember = new Premium(profile, expire, location);
-                    newMember.setGuestPass(guestPass.getValue());
-                    addPremiumMemberToDatabase(newMember);
-                    clearMembershipInputs();
-                }
+                Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
+                Date expire = Date.getCurrentDate().calculateTwelveMonthsLater();
+                Premium newMember = new Premium(profile, expire, location);
+                newMember.setGuestPass(guestPass.getValue());
+                addPremiumMemberToDatabase(newMember);
             }
         }
     }
@@ -339,7 +343,7 @@ public class StudioManagerController {
         } else {
             outputArea.setText(firstname.getText() + " " + lastname.getText() + " is not in the member database.");
         }
-        clearMembershipInputs();
+        //clearMembershipInputs();
     }
     @FXML
     protected void onclickLoadMembers() {
@@ -348,6 +352,7 @@ public class StudioManagerController {
             memberList.load(new File("src/main/java/test/memberList.txt"));
             schedule.load(new File("src/main/java/test/classSchedule.txt"));
             outputArea.setText("Updating member list and class schedule...\n" + memberList.getMemberListString() + schedule.getScheduleString());
+            //clearMembershipInputs();
         } catch (FileNotFoundException e) {
             outputArea.setText("Error loading initial files: " + e.getMessage());
         }
@@ -447,27 +452,26 @@ public class StudioManagerController {
             return;
         }
         recordAttendance(fitnessClass, member);
-        clearClassAttendanceInputs();
     }
 
-    //clear the inputs after registration
-    private void clearClassAttendanceInputs() {
-        classFirstname.clear();
-        classLastname.clear();
-        classAttendanceDob.setValue(null);
-        classGroup.getSelectedToggle().setSelected(false);
-        instructorGroup.getSelectedToggle().setSelected(false);
-        classAttendanceGroupLocation.getSelectedToggle().setSelected(false);
-    }
-
-    //clear the inputs after registration
-    private void clearMembershipInputs() {
-        firstname.clear();
-        lastname.clear();
-        dateOfBirth.setValue(null);
-        memberTypeGroup.getSelectedToggle().setSelected(false);
-        homeStudioGroup.getSelectedToggle().setSelected(false);
-    }
+//    //clear the inputs after registration
+//    private void clearClassAttendanceInputs() {
+//        classFirstname.clear();
+//        classLastname.clear();
+//        classAttendanceDob.setValue(null);
+//        classGroup.getSelectedToggle().setSelected(false);
+//        instructorGroup.getSelectedToggle().setSelected(false);
+//        classAttendanceGroupLocation.getSelectedToggle().setSelected(false);
+//    }
+//
+//    //clear the inputs after registration
+//    private void clearMembershipInputs() {
+//        firstname.clear();
+//        lastname.clear();
+//        dateOfBirth.setValue(null);
+//        memberTypeGroup.getSelectedToggle().setSelected(false);
+//        homeStudioGroup.getSelectedToggle().setSelected(false);
+//    }
 
     /**
      * Retrieves a member from the member list based on the provided profile.
@@ -656,7 +660,7 @@ public class StudioManagerController {
                     formatTime(time),
                     fitnessClass.getStudio()));
         }
-        clearClassAttendanceInputs();
+        //clearClassAttendanceInputs();
     }
 
     //////////////////////////  Register Guest and Remove Guest //////////////////////////////
@@ -690,7 +694,6 @@ public class StudioManagerController {
             return;
         }
         handleGuestRegistration(member, fitnessClass, getSelectedLocation());
-        clearClassAttendanceInputs();
     }
 
     /**
@@ -841,7 +844,7 @@ public class StudioManagerController {
         } else {
             outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is not in " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
         }
-        clearClassAttendanceInputs();
+        //clearClassAttendanceInputs();
     }
 
     // Method to choose a file from the system
