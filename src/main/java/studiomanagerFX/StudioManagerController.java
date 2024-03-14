@@ -687,12 +687,6 @@ public class StudioManagerController {
             printClassDoesNotExist(getSelectedClass(), getSelectedInstructor(), getSelectedLocation());
             return;
         }
-        if (isMemberAlreadyRegistered(fitnessClass, member)) {
-            return;
-        }
-        if (hasTimeConflict(fitnessClass, member)) {
-            return;
-        }
         handleGuestRegistration(member, fitnessClass, getSelectedLocation());
     }
 
@@ -713,14 +707,11 @@ public class StudioManagerController {
             outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " [BASIC] - no guest pass.");
             return;
         }
-
         if (member instanceof Family) {
             handleFamilyGuest(member, fitnessClass, studioName, homeStudio, zip, county);
 
         } else if (member instanceof Premium) {
             handlePremiumGuest(member, fitnessClass, studioName, homeStudio, zip, county);
-            String guestPasses = String.valueOf(((Premium) member).getGuestPass());
-            classGuestPasses.setText(guestPasses);
         }
     }
 
@@ -762,6 +753,7 @@ public class StudioManagerController {
         } else {
             if (!((Premium) member).hasGuestPass()) {
                 outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() + " guest pass not available.");
+                classGuestPasses.setText(Integer.toString(((Premium)member).getGuestPass()));
             } else {
                 printGuestHomeStudioMismatch(member, studioName);
             }
@@ -780,14 +772,15 @@ public class StudioManagerController {
     private void processGuestAttendance(FitnessClass fitnessClass, Member member, String zip, String county) {
         if (member instanceof Family) {
             ((Family) member).takeAttendanceOfGuest();
+            classGuestPasses.setText("0");
         } else if (member instanceof Premium) {
             ((Premium) member).takeAttendanceOfGuest();
+            classGuestPasses.setText(Integer.toString(((Premium)member).getGuestPass()));
         }
         outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
                 " (guest) attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
         fitnessClass.addGuest(member);
         member.registerClass(fitnessClass);
-        classGuestPasses.setText("1");
     }
 
     /**
