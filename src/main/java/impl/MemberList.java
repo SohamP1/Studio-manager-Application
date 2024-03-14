@@ -198,18 +198,18 @@ public class MemberList {
      * Sorts and prints the member list by member profiles using a bubble sort algorithm.
      * Sorting is based on last name, then first name, and finally date of birth.
      */
-    public void printByMember() {
+    public String printByMember() {
+        StringBuilder sb = new StringBuilder();
         if (size == 0) {
-            System.out.println("Collection is empty!");
-            return;
+            sb.append("Collection is empty!");
+            return sb.toString();
         }
         bubbleSort();
-
-        System.out.println("\n-list of members sorted by member profiles-");
+        sb.append("\n-list of members sorted by member profiles-\n");
         bubbleSort();
-        printMembers();
-        System.out.println("-end of list-\n");
-
+        sb.append(printMembers());
+        sb.append("-end of list-\n");
+        return sb.toString();
     }
 
     /**
@@ -272,12 +272,13 @@ public class MemberList {
      * This method first sorts the members by county names in a case-insensitive manner,
      * and then by their zip codes if counties are identical.
      */
-    public void printByCounty() {
+    public String printByCounty() {
+        StringBuilder sb = new StringBuilder();
         if (size == 0) {
-            System.out.println("Collection is empty!");
-            return;
+            sb.append("Collection is empty!");
+            return sb.toString();
         }
-        System.out.println("\n-list of members sorted by county then zipcode-");
+        sb.append("\n-list of members sorted by county then zipcode-\n");
         for (int i = 0; i < members.length - 1; i++) {
             for (int j = 0; j < members.length - i - 1; j++) {
                 if (compareMembersByCounty(members[j], members[j + 1]) > 0) {
@@ -287,8 +288,9 @@ public class MemberList {
                 }
             }
         }
-        printMembers();
-        System.out.println("-end of list-\n");
+        sb.append(printMembers());
+        sb.append("-end of list-\n");
+        return sb.toString();
     }
 
     /**
@@ -324,30 +326,33 @@ public class MemberList {
      * Prints members along with their next due fees.
      * The method iterates over all members and calculates their next due amount.
      */
-    public void printFees() {
+    public String printFees() {
+        StringBuilder sb = new StringBuilder();
         if (size == 0) {
-            System.out.println("Collection is empty!");
-            return;
+            sb.append("Collection is empty!");
+            return sb.toString();
         }
-        System.out.println("\n-list of members with next dues-");
+        sb.append("\n-list of members with next dues-\n");
         for (Member member : members) {
             if (member != null) {
                 double nextDueAmount = member.bill();
-                System.out.println(member +
-                        " [next due: $" + String.format("%.2f", nextDueAmount) + "]");
+                sb.append(member).append(" [next due: $").append(String.format("%.2f", nextDueAmount)).append("] \n");
             }
         }
-        System.out.println("-end of list-");
+        sb.append("-end of list-");
+        return sb.toString();
     }
 
     /**
      * Utility method for printing member details.
      * Iterates over the members array and prints details of each member.
      */
-    public void printMembers() {
+    public String printMembers() {
+        StringBuilder sb = new StringBuilder();
         for (Member member : members) {
-            if (member != null) System.out.println(member);
+            if (member != null) sb.append(member).append("\n");
         }
+        return sb.toString();
     }
 
     /**

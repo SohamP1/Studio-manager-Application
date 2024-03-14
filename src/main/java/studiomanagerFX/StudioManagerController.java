@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -341,19 +342,17 @@ public class StudioManagerController {
         }
         clearMembershipInputs();
     }
-
-
-//    @FXML
-//    protected void onclickLoadMembers() {
-//        outputArea.clear();
-//        try {
-//            memberList.load(new File("src/main/java/test/memberList.txt"));
-//            schedule.load(new File("src/main/java/test/classSchedule.txt"));
-//            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
-//        } catch (FileNotFoundException e) {
-//            outputArea.setText("Error loading initial files: " + e.getMessage());
-//        }
-//    }
+    @FXML
+    protected void onclickLoadMembers() {
+        outputArea.clear();
+        try {
+            memberList.load(new File("src/main/java/test/memberList.txt"));
+            schedule.load(new File("src/main/java/test/classSchedule.txt"));
+            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
+        } catch (FileNotFoundException e) {
+            outputArea.setText("Error loading initial files: " + e.getMessage());
+        }
+    }
 
 
     /**
@@ -846,18 +845,6 @@ public class StudioManagerController {
         clearClassAttendanceInputs();
     }
 
-
-    @FXML
-    protected void onclickLoadMembers() {
-        try {
-            memberList.load(new File("src/main/java/test/memberList.txt"));
-            //   schedule.load(new File("src/main/java/test/classSchedule.txt"));
-            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
-        } catch (FileNotFoundException e) {
-            outputArea.setText("Error loading initial files: " + e.getMessage());
-        }
-    }
-
     // Method to choose a file from the system
     private File chooseFile() {
         FileChooser fileChooser = new FileChooser();
@@ -885,46 +872,65 @@ public class StudioManagerController {
         schedule.load(file);
 
         // Clear existing items in the table
-        // class_schedule_table.getItems().clear();
+        class_schedule_table.getItems().clear();
 
-        // Iterate through the FitnessClass array and add each class to the table
-        for (FitnessClass fitnessClass : schedule.getClasses()) {
-            class_schedule_table.getItems().add(fitnessClass);
-        }
-        // Set cell value factories for each column
-        col_class_name.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClassInfo().toString()));
-        col_instructor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getInstructor().toString()));
-        col_time.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTime().toString()));
-        col_studio_location.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStudio().toString()));
+        // Get the existing items in the table
+        ObservableList<FitnessClass> items = FXCollections.observableArrayList();
+        class_schedule_table.setItems(items);
+        // Add the new items from the loaded schedule
+        items.addAll(schedule.getClasses());
+        col_class_name.setCellValueFactory(new PropertyValueFactory<>("classInfo"));
+        col_instructor.setCellValueFactory(new PropertyValueFactory<>("instructor"));
+        col_time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        col_studio_location.setCellValueFactory(new PropertyValueFactory<>("studio"));
+
+        col_class_name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClassInfo().toString()));
+        col_instructor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInstructor().toString()));
+        col_time.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTime().toString()));
+        col_studio_location.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudio().toString()));
     }
 
     @FXML
     protected void onclickPrintbyProfile(ActionEvent event) {
-
+        outputArea.clear();
+        outputArea.setText(memberList.printByMember());
     }
 
     @FXML
     protected void onclickPrintbyCounty(ActionEvent event) {
-
+        outputArea.clear();
+        outputArea.setText(memberList.printByCounty());
     }
-
     @FXML
     protected void onclickPrintWithNextDues(ActionEvent event) {
-
+        outputArea.clear();
+        outputArea.setText(memberList.printFees());
     }
-
     @FXML
     protected void onclickShowSchedule(ActionEvent event) {
+        outputArea.clear();
+
+        outputArea.setText(schedule.getScheduleString());
 
     }
-
     @FXML
     protected void onclickShowAttendees(ActionEvent event) {
-
+        outputArea.clear();
+        outputArea.setText(schedule.printClassWithAttendees());
+    }
+    @FXML
+    protected void onclickShowStudioLocations(ActionEvent event) {
+        outputArea.clear();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Location location : Location.values()) {
+            stringBuilder.append(location.toString()).append("\n");
+        }
+        outputArea.setText(stringBuilder.toString());
     }
 
     @FXML
-    protected void onclickShowStudioLocations(ActionEvent event) {
+    protected void onclickClearTextArea(ActionEvent event) {
+        outputArea.clear();
 
     }
 
