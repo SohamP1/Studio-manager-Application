@@ -350,7 +350,7 @@ public class StudioManagerController {
         outputArea.clear();
         try {
             memberList.load(new File("src/main/java/test/memberList.txt"));
-            //schedule.load(new File("src/main/java/test/classSchedule.txt"));
+            schedule.load(new File("src/main/java/test/classSchedule.txt"));
             outputArea.setText("Updating member list and class schedule...\n" + memberList.getMemberListString());
             //clearMembershipInputs();
         } catch (FileNotFoundException e) {
