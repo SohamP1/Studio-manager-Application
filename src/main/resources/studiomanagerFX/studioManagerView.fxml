@@ -281,7 +281,7 @@
                    </TableView>
                </AnchorPane>
            </Tab>
-           <Tab text="Demo Only">
+           <Tab closable="false" text="Print Data">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <MenuBar layoutX="42.0" layoutY="14.0">
@@ -293,18 +293,15 @@
                               <MenuItem mnemonicParsing="false" onAction="#onclickPrintWithNextDues" text="Print with next dues" />
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Fitness Classes">
-                        <items>
-                          <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule" />
-                              <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees" />
-                              <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations" text="Show Studio Locations" />
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Other">
-                        <items>
-                              <MenuItem mnemonicParsing="false" text="Clear TextArea" />
-                        </items>
-                      </Menu>
+                        <Menu mnemonicParsing="false" text="Fitness Classes">
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations"
+                                      text="Show Studio Locations"/>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Other">
+                            <MenuItem mnemonicParsing="false" onAction="#onclickClearTextArea" text="Clear TextArea"/>
+                        </Menu>
                     </menus>
                   </MenuBar>
                </children></AnchorPane>
