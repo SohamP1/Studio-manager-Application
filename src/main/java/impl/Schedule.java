@@ -8,6 +8,7 @@ import enums.Time;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -111,7 +112,7 @@ public class Schedule {
                     fitnessClass.getClassInfo(),
                     fitnessClass.getInstructor(),
                     hr, min,
-                    fitnessClass.getStudio().getCity().toUpperCase()));
+                    fitnessClass.getStudio().getCity().toUpperCase())).append("\n");
         }
         sb.append("-end of class list.\n");
         return sb.toString();
@@ -122,26 +123,29 @@ public class Schedule {
      * Prints classes along with their attendees and guests. Each class is listed with its details
      * followed by the names of registered members and guests if any.
      */
-    public void printClassWithAttendees() {
+    public String printClassWithAttendees() {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < numClasses; i++) {
             FitnessClass fitnessClass = classes[i];
             int hr = fitnessClass.getTime().getHour();
             int min = fitnessClass.getTime().getMinute();
-            System.out.printf("%s - %s, %01d:%02d, %s%n",
+            sb.append(String.format("%s - %s, %01d:%02d, %s%n",
                     fitnessClass.getClassInfo(),
                     fitnessClass.getInstructor(),
                     hr, min,
-                    fitnessClass.getStudio().getCity().toUpperCase());
+                    fitnessClass.getStudio().getCity().toUpperCase()));
             if (classes[i].getMembers().getSize() > 0) {
-                System.out.println("[Attendees]");
+                sb.append("[Attendees]");
                 classes[i].getMembers().displayPrintMembers();
             }
 
             if(classes[i].getGuests().getSize() > 0) {
-                System.out.println("[Guests]");
+                sb.append("[Guests]");
                 classes[i].getGuests().displayPrintMembers();
             }
+            sb.append("\n");
         }
+        return sb.toString();
     }
 
     /**
@@ -183,5 +187,17 @@ public class Schedule {
         return false;
     }
 
+    public ArrayList<FitnessClass> getClasses() {
+        ArrayList<FitnessClass> classList = new ArrayList<>();
+
+        // Iterate through the classes array and add non-null elements to the ArrayList
+        for (int i = 0; i < numClasses; i++) {
+            if (classes[i] != null) {
+                classList.add(classes[i]);
+            }
+        }
+
+        return classList;
+    }
 
 }
