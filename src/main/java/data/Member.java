@@ -112,15 +112,17 @@ public class Member implements Comparable<Member> {
      */
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
         String expirationStatus = isMembershipExpired() ? "Membership expired" : "Membership expires " + this.getExpire().toString();
-        return String.format("%s:%s:%s, %s, Home Studio: %s, %s, %s",
+        sb.append(String.format("%s:%s:%s, %s, Home Studio: %s, %s, %s",
                 this.getProfile().getFname(),
                 this.getProfile().getLname(),
                 this.getProfile().getDob(),
                 expirationStatus,
                 this.getHomeStudio().getCity().toUpperCase(),
                 this.getHomeStudio().getZipCode(),
-                this.getHomeStudio().getCounty().toUpperCase());
+                this.getHomeStudio().getCounty().toUpperCase()));
+        return sb.toString();
     }
 
     /**

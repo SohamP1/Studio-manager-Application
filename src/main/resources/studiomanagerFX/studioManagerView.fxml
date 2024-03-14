@@ -5,6 +5,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -119,7 +122,7 @@
                            <RowConstraints maxHeight="37.83837890625" minHeight="0.0" prefHeight="35.94612121582031" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
                        </rowConstraints>
@@ -214,15 +217,10 @@
                                <Insets left="100.0" />
                            </GridPane.margin>
                        </RadioButton>
-                       <TextField fx:id="classFirstname" maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="first name" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
-                       <TextField fx:id="classLastname" maxWidth="200.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                       <TextField fx:id="classFirstname" maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="first name" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                       <TextField fx:id="classLastname" maxWidth="200.0" minWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <GridPane.margin>
                                <Insets left="250.0" />
-                           </GridPane.margin>
-                       </TextField>
-                       <TextField fx:id="classGuestPasses" editable="false" maxWidth="60.0" prefHeight="26.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                           <GridPane.margin>
-                               <Insets left="390.0" />
                            </GridPane.margin>
                        </TextField>
                        <DatePicker fx:id="classAttendanceDob" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -251,12 +249,17 @@
                        <Line endX="617.2928466796875" endY="0.2929084897041321" startX="-100.0" GridPane.rowIndex="3" />
                        <Line endX="617.4999389648438" startX="-100.0" GridPane.rowIndex="6" />
                        <Line endX="617.2928466796875" endY="-0.20710676908493042" startX="-100.0" GridPane.rowIndex="9" />
+                  <TextArea fx:id="classGuestPasses" editable="false" maxWidth="60.0" prefHeight="34.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="370.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextArea>
                    </GridPane>
                </AnchorPane>
            </Tab>
            <Tab text="Class Schedule">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                   <TableView layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
+                   <TableView fx:id="class_schedule_table" layoutX="15.0" layoutY="32.0" prefHeight="268.0" prefWidth="770.0">
                        <columns>
                            <TableColumn fx:id="col_time" prefWidth="98.20343589782715" text="Time" />
                            <TableColumn fx:id="col_class_name" prefWidth="132.0385284423828" text="Class Name" />
@@ -264,7 +267,7 @@
                            <TableColumn fx:id="col_studio_location" prefWidth="384.8287353515625" text="Studio Location" />
                        </columns>
                    </TableView>
-                   <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
+                   <Button layoutX="620.0" layoutY="317.0" mnemonicParsing="false" onAction="#onclickLoadSchedule" prefHeight="32.0" prefWidth="164.0" text="Load Schedule" />
                </AnchorPane>
            </Tab>
            <Tab text="Studio Location">
@@ -279,7 +282,32 @@
                </AnchorPane>
            </Tab>
            <Tab text="Demo Only">
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <MenuBar layoutX="42.0" layoutY="14.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Member">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyProfile" text="Print by Profile" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyCounty" text="Print by County/Zipcode" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintWithNextDues" text="Print with next dues" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Fitness Classes">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations" text="Show Studio Locations" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Other">
+                        <items>
+                              <MenuItem mnemonicParsing="false" text="Clear TextArea" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children></AnchorPane>
            </Tab>
        </TabPane>
    </center>

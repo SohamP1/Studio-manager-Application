@@ -131,4 +131,8 @@ public class Premium extends Member {
     public void setGuestPass(int guestPass) {
         this.guestPass = guestPass;
     }
+
+    public int getGuestPass() {
+        return guestPass;
+    }
 }
