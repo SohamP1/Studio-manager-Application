@@ -142,185 +142,100 @@ public class StudioManagerController {
         ObservableList<Location> locations = FXCollections.observableArrayList(Location.values());
         studio_location_table.setItems(locations);
     }
-
     private boolean validateMembershipInput() {
-        String firstName = firstname.getText().trim();
-        String lastName = lastname.getText().trim();
-        LocalDate dobLocalDate = dateOfBirth.getValue();
-
-        if (firstName.isEmpty()) {
+        if (firstname.getText().trim().isEmpty()) {
             outputArea.setText("First name is required.");
             return false;
         }
-
-        if (lastName.isEmpty()) {
+        if (lastname.getText().trim().isEmpty()) {
             outputArea.setText("Last name is required.");
             return false;
         }
-
-        if (dobLocalDate == null) {
+        if (dateOfBirth.getValue() == null) {
             outputArea.setText("Date of birth is required.");
             return false;
         }
-
         if (memberTypeGroup.getSelectedToggle() == null) {
             outputArea.setText("Please select a member type.");
             return false;
         }
-
         if (homeStudioGroup.getSelectedToggle() == null) {
             outputArea.setText("Please select a home studio.");
+            return false;
         }
-        return true;
+        return true; // All checks passed
     }
-
     private Date createDateFromLocalDate(LocalDate dobLocalDate) {
-        Date dob;
-        try {
-            // Convert LocalDate to your custom Date format
-            dob = new Date(dobLocalDate.getMonthValue(), dobLocalDate.getDayOfMonth(), dobLocalDate.getYear());
+        if (dobLocalDate == null) {
+            outputArea.setText("Date of birth is required.");
+            return null;
+        }
 
-            // Assuming this constructor might throw IllegalArgumentException for other reasons
-        } catch (IllegalArgumentException e) {
-            outputArea.setText("Invalid date format: " + dobLocalDate);
+        Date dob = new Date(dobLocalDate.getMonthValue(), dobLocalDate.getDayOfMonth(), dobLocalDate.getYear());
+        if (!dob.isValid()) {
+            outputArea.setText("Invalid calendar date!");
             return null;
         }
         if (dob.isFutureDate()) {
-            outputArea.setText("DOB " + dobLocalDate + ": cannot be today or a future date!");
-            return null;
-        }
-        if (!dob.isValid()) {
-            outputArea.setText("DOB " + dobLocalDate + ": invalid calendar date!");
+            outputArea.setText("DOB cannot be today or a future date!");
             return null;
         }
         if (!dob.isEligible()) {
-            outputArea.setText("DOB " + dobLocalDate + ": must be 18 or older to join!");
+            outputArea.setText("Must be 18 or older to join!");
             return null;
         }
-        return dob;
+        return dob; // Date object is valid
     }
-
-    /**
-     * Creates a Location enum instance from a string representing a city. This method ensures the city
-     * name is a valid, recognized studio location within the system.
-     *
-     * @param city The city name to convert into a Location enum.
-     * @return A Location enum instance if the city is valid, null otherwise.
-     */
-    private Location createLocation(String city) {
-        try {
-            return Location.valueOf(city.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            outputArea.setText(city + ": invalid studio location!");
-            return null;
-        }
-    }
-
     @FXML
     protected void onclickAddmember(ActionEvent event) {
         outputArea.clear();
-        // First, validate the input
         if (!validateMembershipInput()) {
-            return; // Stop execution as validation failed
+            return; // Validation failed
         }
 
-        RadioButton selectedMemberType = (RadioButton) memberTypeGroup.getSelectedToggle();
-        String memberType = selectedMemberType != null ? selectedMemberType.getText() : "";
-
-
-        RadioButton selectedStudioLocation = (RadioButton) homeStudioGroup.getSelectedToggle();
-        String studioLocation = selectedStudioLocation != null ? selectedStudioLocation.getText() : "";
-
+        String memberType = ((RadioButton) memberTypeGroup.getSelectedToggle()).getText();
+        String studioLocation = ((RadioButton) homeStudioGroup.getSelectedToggle()).getText();
         Date dobCustom = createDateFromLocalDate(dateOfBirth.getValue());
-        Location location = createLocation(studioLocation);
+        if (dobCustom == null) return; // dobCustom validation is handled in createDateFromLocalDate
 
-        // Now, based on the member type, create and add the member
+        Location location = Location.valueOf(studioLocation.toUpperCase());
+        Integer guestPassesSelected = guestPass.getValue();
+        Profile profile = new Profile(firstname.getText().trim(), lastname.getText().trim(), dobCustom);
+        Member newMember = null;
+
         switch (memberType) {
-            case "Basic" -> {
-                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
-                    Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
-                    Date expire = Date.getCurrentDate().calculateOneMonthLater();
-                    Basic newMember = new Basic(profile, expire, location);
-                    addBasicMemberToDatabaseForBasic(newMember);
-                    clearMembershipInputs();
-                } else {
-                    outputArea.setText("Basic Members Do not Offer Guest Passes");
+            case "Basic":
+                if (guestPassesSelected != 0) {
+                    outputArea.setText("Basic members cannot have guest passes.");
+                    return;
                 }
-            }
-            case "Family" -> {
-                Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
-                Date expire = Date.getCurrentDate().calculateThreeMonthsLater();
-                Family newMember = new Family(profile, expire, location);
-                if (dobCustom != null && location != null && guestPass.getValue() == 0) {
-                    newMember.takeAttendanceOfGuest(); // setting false cause 0 guest
-                    addFamilyMemberToDatabase(newMember);
-                    clearMembershipInputs();
-                } else if (dobCustom != null && location != null && guestPass.getValue() == 1) {
-                    newMember.removeAttendanceOfGuest(); // setting true cause 1 guest
-                    addFamilyMemberToDatabase(newMember);
-                    clearMembershipInputs();
-                } else {
-                    outputArea.setText("Family Members can have max 1 Guest Pass");
+                newMember = new Basic(profile, dobCustom.calculateOneMonthLater(), location);
+                break;
+            case "Family":
+                if (guestPassesSelected > 1) {
+                    outputArea.setText("Family members can have only 1 guest pass.");
+                    return;
                 }
-            }
-            case "Premium" -> {
-                if (dobCustom != null && location != null) {
-                    Profile profile = new Profile(firstname.getText(), lastname.getText(), dobCustom);
-                    Date expire = Date.getCurrentDate().calculateTwelveMonthsLater();
-                    Premium newMember = new Premium(profile, expire, location);
-                    newMember.setGuestPass(guestPass.getValue());
-                    addPremiumMemberToDatabase(newMember);
-                    clearMembershipInputs();
+                newMember = new Family(profile, dobCustom.calculateThreeMonthsLater(), location);
+                break;
+            case "Premium":
+                if (guestPassesSelected > 3) {
+                    outputArea.setText("Premium members can have up to 3 guest passes.");
+                    return;
                 }
-            }
+                newMember = new Premium(profile, dobCustom.calculateTwelveMonthsLater(), location);
+                ((Premium) newMember).setGuestPass(guestPassesSelected);
+                break;
         }
-    }
 
-    /**
-     * Adds a Basic member to the studio's member database, performing checks for duplicate profiles. This method
-     * prints feedback indicating whether the addition was successful or if the member already exists in the database.
-     *
-     * @param newMember The new Basic member to be added to the database.
-     */
-    private void addBasicMemberToDatabaseForBasic(Basic newMember) {
-        if (!memberList.add(newMember)) {
-            outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() +
-                    " is already in the member database.");
-        } else {
+        if (newMember != null && memberList.add(newMember)) {
             outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() + " added.");
+        } else {
+            outputArea.setText(profile.getFname() + " " + profile.getLname() +
+                    " is already in the member database.");
         }
-    }
 
-    /**
-     * Adds a Family member to the studio's member database, ensuring unique membership through profile comparison.
-     * If the member already exists in the database, a message indicating duplication is printed. Otherwise,
-     * a confirmation message is printed, indicating the successful addition of the new Family member.
-     *
-     * @param newMember The new Family member to be added to the database.
-     */
-    private void addFamilyMemberToDatabase(Family newMember) {
-        if (!memberList.add(newMember)) {
-            outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() +
-                    " is already in the member database.");
-        } else {
-            outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() + " added.");
-        }
-    }
-
-    /**
-     * Adds a Premium member (considered here as a Family member for context) to the studio's member database.
-     * It checks for duplicates based on the member's profile and prints a message indicating whether the addition
-     * was successful or if the member already exists in the database.
-     *
-     * @param newMember The new Premium member to be added to the database.
-     */
-    private void addPremiumMemberToDatabase(Premium newMember) {
-        if (!memberList.add(newMember)) {
-            outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() +
-                    " is already in the member database.");
-        } else {
-            outputArea.setText(newMember.getProfile().getFname() + " " + newMember.getProfile().getLname() + " added.");
-        }
+        clearMembershipInputs();
     }
 
     @FXML
