@@ -103,18 +103,24 @@ public class Schedule {
      * time, and studio location.
      */
     public String getScheduleString() {
-        StringBuilder sb = new StringBuilder("-Fitness classes loaded-\n");
-        for (int i = 0; i < numClasses; i++) {
-            FitnessClass fitnessClass = classes[i];
-            int hr = fitnessClass.getTime().getHour();
-            int min = fitnessClass.getTime().getMinute();
-            sb.append(String.format("%s - %s, %01d:%02d, %s%n",
-                    fitnessClass.getClassInfo(),
-                    fitnessClass.getInstructor(),
-                    hr, min,
-                    fitnessClass.getStudio().getCity().toUpperCase())).append("\n");
+        StringBuilder sb = new StringBuilder();
+        if(numClasses == 0) {
+            sb.append("There are no schedule classes.");
         }
-        sb.append("-end of class list.\n");
+        else {
+            sb.append("-list of class schedule-\n");
+            for (int i = 0; i < numClasses; i++) {
+                FitnessClass fitnessClass = classes[i];
+                int hr = fitnessClass.getTime().getHour();
+                int min = fitnessClass.getTime().getMinute();
+                sb.append(String.format("%s - %s, %01d:%02d, %s%n",
+                        fitnessClass.getClassInfo(),
+                        fitnessClass.getInstructor(),
+                        hr, min,
+                        fitnessClass.getStudio().getCity().toUpperCase()));
+            }
+            sb.append("-end of class list.\n");
+        }
         return sb.toString();
     }
 
@@ -125,6 +131,10 @@ public class Schedule {
      */
     public String printClassWithAttendees() {
         StringBuilder sb = new StringBuilder();
+        if(numClasses == 0) {
+            sb.append("There are no schedule classes.");
+        }
+        else {
         for (int i = 0; i < numClasses; i++) {
             FitnessClass fitnessClass = classes[i];
             int hr = fitnessClass.getTime().getHour();
@@ -136,14 +146,13 @@ public class Schedule {
                     fitnessClass.getStudio().getCity().toUpperCase()));
             if (classes[i].getMembers().getSize() > 0) {
                 sb.append("[Attendees]");
-                classes[i].getMembers().displayPrintMembers();
+                sb.append(classes[i].getMembers().getMemberListString());
             }
-
             if(classes[i].getGuests().getSize() > 0) {
                 sb.append("[Guests]");
-                classes[i].getGuests().displayPrintMembers();
+                sb.append(classes[i].getGuests().getMemberListString());
             }
-            sb.append("\n");
+        }
         }
         return sb.toString();
     }
@@ -200,4 +209,7 @@ public class Schedule {
         return classList;
     }
 
+    public int getNumClasses() {
+        return numClasses;
+    }
 }

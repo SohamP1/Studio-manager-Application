@@ -28,33 +28,45 @@
        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
            <Tab text="Membership">
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                   <GridPane layoutX="39.0" layoutY="25.0" prefHeight="302.0" prefWidth="730.0">
+                   <GridPane layoutX="39.0" layoutY="25.0" prefHeight="325.0" prefWidth="729.0">
                        <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.20001220703125" minWidth="10.0" prefWidth="100.59996337890624" />
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.6000122070311" minWidth="10.0" prefWidth="543.0000366210936" />
                        </columnConstraints>
                        <rowConstraints>
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                        </rowConstraints>
-                       <Label prefHeight="2.0" prefWidth="90.0" text="Member Profile" />
+                       <Label prefHeight="19.0" prefWidth="106.0" text="Member Profile" textAlignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin></Label>
                        <TextField fx:id="firstname" maxWidth="300.0" promptText="first name" GridPane.columnIndex="1" />
                        <TextField fx:id="lastname" layoutX="121.0" layoutY="11.0" maxWidth="300.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                       <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                       <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="28.0" prefWidth="121.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="2">
+                       <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                       <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="28.0" prefWidth="121.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <GridPane.margin>
                                <Insets left="200.0" />
                            </GridPane.margin>
                        </Button>
-                       <Label prefHeight="2.0" prefWidth="90.0" text="Member Type" GridPane.rowIndex="4" />
+                       <Label prefHeight="19.0" prefWidth="99.0" text="Member Type" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin></Label>
                        <RadioButton fx:id="basicToggle" mnemonicParsing="false" text="Basic" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                        <RadioButton fx:id="familyToggle" mnemonicParsing="false" text="Family" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <GridPane.margin>
@@ -66,7 +78,13 @@
                                <Insets left="200.0" />
                            </GridPane.margin>
                        </RadioButton>
-                       <Label text="Home Studio" GridPane.rowIndex="6" />
+                       <Label prefHeight="19.0" prefWidth="99.0" text="Home Studio" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin></Label>
                        <RadioButton fx:id="bridgewaterToggle" mnemonicParsing="false" text="Bridgewater" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                        <RadioButton fx:id="edisonToggle" mnemonicParsing="false" text="Edison" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <GridPane.margin>
@@ -103,6 +121,9 @@
                                <Insets left="200.0" />
                            </GridPane.margin>
                        </Button>
+                  <Line endX="629.2929077148438" endY="0.2928932309150696" startX="-100.0" GridPane.rowIndex="2" />
+                  <Line endX="629.2929077148438" endY="0.2928932309150696" startX="-100.0" GridPane.rowIndex="5" />
+                  <Line endX="629.2929077148438" endY="0.01657092571258545" startX="-100.0" GridPane.rowIndex="8" />
                    </GridPane>
                </AnchorPane>
            </Tab>
@@ -294,13 +315,12 @@
                         </items>
                       </Menu>
                         <Menu mnemonicParsing="false" text="Fitness Classes">
-                            <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule"/>
-                            <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees"/>
-                            <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations"
-                                      text="Show Studio Locations"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowSchedule" text="Show Schedule" />
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowAttendees" text="Show Attendees" />
+                            <MenuItem mnemonicParsing="false" onAction="#onclickShowStudioLocations" text="Show Studio Locations" />
                         </Menu>
                         <Menu mnemonicParsing="false" text="Other">
-                            <MenuItem mnemonicParsing="false" onAction="#onclickClearTextArea" text="Clear TextArea"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onclickClearTextArea" text="Clear TextArea" />
                         </Menu>
                     </menus>
                   </MenuBar>

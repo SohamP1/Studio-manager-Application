@@ -348,7 +348,7 @@ public class StudioManagerController {
         try {
             memberList.load(new File("src/main/java/test/memberList.txt"));
             schedule.load(new File("src/main/java/test/classSchedule.txt"));
-            outputArea.setText("Studio Manager is up running...\n" + memberList.getMemberListString() + schedule.getScheduleString());
+            outputArea.setText("Updating member list and class schedule...\n" + memberList.getMemberListString() + schedule.getScheduleString());
         } catch (FileNotFoundException e) {
             outputArea.setText("Error loading initial files: " + e.getMessage());
         }
@@ -909,7 +909,6 @@ public class StudioManagerController {
     @FXML
     protected void onclickShowSchedule(ActionEvent event) {
         outputArea.clear();
-
         outputArea.setText(schedule.getScheduleString());
 
     }
