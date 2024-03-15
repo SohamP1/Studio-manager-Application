@@ -383,5 +383,16 @@ public class MemberList {
         return null;
     }
 
+
+
+
+    public boolean addGuest(Member member) {
+        if (size == members.length) {
+            grow();
+        }
+        members[size] = member;
+        size++;
+        return true;
+    }
 }
 

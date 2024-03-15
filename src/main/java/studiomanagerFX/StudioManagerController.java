@@ -350,7 +350,6 @@ public class StudioManagerController {
         outputArea.clear();
         try {
             memberList.load(new File("src/main/java/test/memberList.txt"));
-            schedule.load(new File("src/main/java/test/classSchedule.txt"));
             outputArea.setText("Updating member list and class schedule...\n" + memberList.getMemberListString());
             //clearMembershipInputs();
         } catch (FileNotFoundException e) {
@@ -608,9 +607,21 @@ public class StudioManagerController {
                 " attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
         if (member instanceof Basic) {
             ((Basic) member).attendClass();
+            classGuestPasses.setText("0");
         }
+        if (member instanceof Family) {
+            if (!((Family) member).hasGuestPass()) {
+                classGuestPasses.setText("0");
+            } else {
+                classGuestPasses.setText("1");
+            }        }
+        if (member instanceof Premium) {
+            classGuestPasses.setText(Integer.toString(((Premium)member).getGuestPass()));
+        }
+
         fitnessClass.addMember(member);
         member.registerClass(fitnessClass);
+
     }
 
     //////////////////////////////// Unregister Member //////////////////////////////////////////
@@ -646,6 +657,7 @@ public class StudioManagerController {
         String time = fitnessClass.getTime().toString();
 
         if (fitnessClass.removeMember(member)) {
+            member.unregisterClass(fitnessClass);
             outputArea.setText(String.format("%s %s is removed from %s, %s, %s",
                     classFirstname.getText().trim(),
                     classLastname.getText().trim(),
@@ -780,7 +792,7 @@ public class StudioManagerController {
         outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
                 " (guest) attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
         fitnessClass.addGuest(member);
-        member.registerClass(fitnessClass);
+       // member.registerClass(fitnessClass);
     }
 
     /**
@@ -825,14 +837,16 @@ public class StudioManagerController {
             return;
         }
         String time = fitnessClass.getTime().toString();
-        member.unregisterClass(fitnessClass);
         if (fitnessClass.removeGuest(member)) {
+            member.unregisterClass(fitnessClass); //
             if (member instanceof Family) {
                 ((Family) member).removeAttendanceOfGuest();
                 outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is removed from " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
+                classGuestPasses.setText("1");
             } else if (member instanceof Premium) {
                 ((Premium) member).removeGuest();
                 outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is removed from " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
+                classGuestPasses.setText(Integer.toString(((Premium)member).getGuestPass()));
             }
         } else {
             outputArea.setText(firstname.getText().trim() + " " + lastname.getText().trim() + " (guest) is not in " + getSelectedInstructor().toUpperCase() + ", " + formatTime(time) + ", " + fitnessClass.getStudio());
@@ -865,7 +879,6 @@ public class StudioManagerController {
 
     private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
         schedule.load(file);
-
         // Clear existing items in the table
         class_schedule_table.getItems().clear();
 

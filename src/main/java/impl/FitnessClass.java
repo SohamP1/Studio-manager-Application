@@ -112,10 +112,10 @@ public class FitnessClass {
      * @param member The guest member to add.
      */
     public void addGuest(Member member) {
-        if (isGuestRegistered(member)) {
-            return;
-        }
-        guests.add(member);
+//        if (isGuestRegistered(member)) {
+//            return;
+//        }
+        guests.addGuest(member);
     }
 
     /**

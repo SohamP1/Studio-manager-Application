@@ -15,6 +15,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -270,10 +271,19 @@
                        <Line endX="617.2928466796875" endY="0.2929084897041321" startX="-100.0" GridPane.rowIndex="3" />
                        <Line endX="617.4999389648438" startX="-100.0" GridPane.rowIndex="6" />
                        <Line endX="617.2928466796875" endY="-0.20710676908493042" startX="-100.0" GridPane.rowIndex="9" />
-                  <TextArea fx:id="classGuestPasses" editable="false" maxWidth="60.0" prefHeight="34.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                  <TextArea fx:id="classGuestPasses" editable="false" maxWidth="50.0" prefHeight="34.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <GridPane.margin>
-                        <Insets bottom="10.0" left="370.0" top="10.0" />
+                        <Insets bottom="50.0" left="380.0" right="200.0" top="50.0" />
                      </GridPane.margin>
+                     <effect>
+                        <Glow />
+                     </effect>
+                     <opaqueInsets>
+                        <Insets left="50.0" top="50.0" />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
                   </TextArea>
                    </GridPane>
                </AnchorPane>
