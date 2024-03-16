@@ -100,6 +100,14 @@ public class StudioManagerController {
         familyToggle.setToggleGroup(memberTypeGroup);
         premiumToggle.setToggleGroup(memberTypeGroup);
 
+        // Add event handlers to radio buttons to update the ComboBox value
+        basicToggle.setOnAction(event -> guestPass.setValue(0));
+        familyToggle.setOnAction(event -> guestPass.setValue(1));
+        premiumToggle.setOnAction(event -> guestPass.setValue(3));
+
+        // Set default value of the ComboBox
+        guestPass.setValue(0);
+
         bridgewaterToggle.setToggleGroup(homeStudioGroup);
         edisonToggle.setToggleGroup(homeStudioGroup);
         franklinToggle.setToggleGroup(homeStudioGroup);
