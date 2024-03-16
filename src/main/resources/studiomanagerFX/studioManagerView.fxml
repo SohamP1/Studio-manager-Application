@@ -37,12 +37,12 @@
                        <rowConstraints>
                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                        </rowConstraints>
@@ -55,13 +55,13 @@
                      </GridPane.margin></Label>
                        <TextField fx:id="firstname" maxWidth="300.0" promptText="first name" GridPane.columnIndex="1" />
                        <TextField fx:id="lastname" layoutX="121.0" layoutY="11.0" maxWidth="300.0" promptText="last name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                       <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                       <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="28.0" prefWidth="121.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="3">
+                       <DatePicker fx:id="dateOfBirth" maxHeight="-Infinity" prefHeight="26.0" prefWidth="162.0" promptText="date of birth" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                       <Button mnemonicParsing="false" onAction="#onclickCancelMembership" prefHeight="28.0" prefWidth="121.0" style="-fx-border-color: green;" text="Cancel Existing " GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
-                               <Insets left="200.0" />
+                               <Insets left="180.0" />
                            </GridPane.margin>
                        </Button>
-                       <Label prefHeight="19.0" prefWidth="99.0" text="Member Type" GridPane.rowIndex="3">
+                       <Label prefHeight="19.0" prefWidth="99.0" text="Member Type" GridPane.rowIndex="4">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -122,7 +122,7 @@
                                <Insets left="200.0" />
                            </GridPane.margin>
                        </Button>
-                  <Line endX="629.2929077148438" endY="0.2928932309150696" startX="-100.0" GridPane.rowIndex="2" />
+                  <Line endX="629.2929077148438" endY="0.2928932309150696" startX="-100.0" GridPane.rowIndex="3" />
                   <Line endX="629.2929077148438" endY="0.2928932309150696" startX="-100.0" GridPane.rowIndex="5" />
                   <Line endX="629.2929077148438" endY="0.01657092571258545" startX="-100.0" GridPane.rowIndex="8" />
                    </GridPane>
@@ -339,6 +339,9 @@
        </TabPane>
    </center>
    <bottom>
-          <TextArea fx:id="outputArea" prefHeight="308.0" prefWidth="800.0" style="-fx-border-color: black;" BorderPane.alignment="CENTER" />
+          <TextArea fx:id="outputArea" prefHeight="308.0" prefWidth="800.0" style="-fx-border-color: black;" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></TextArea>
    </bottom>
 </BorderPane>
