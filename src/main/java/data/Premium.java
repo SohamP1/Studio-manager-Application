@@ -121,7 +121,7 @@ public class Premium extends Member {
     }
 
     /**
-     * Sets the number of guest passes available to a premium member.
+     * Sets the number of guest passes available to a premium member in GUI.
      * This method updates the number of guest passes a premium member can use. Guest passes allow
      * premium members to bring guests to the facility, providing flexibility and added value to the
      * membership.
@@ -132,6 +132,11 @@ public class Premium extends Member {
         this.guestPass = guestPass;
     }
 
+    /**
+     * Retrieves the current number of guest passes available to this Premium member.
+     *
+     * @return the number of guest passes available.
+     */
     public int getGuestPass() {
         return guestPass;
     }

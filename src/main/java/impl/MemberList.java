@@ -356,16 +356,6 @@ public class MemberList {
     }
 
     /**
-     * Utility method for printing member details.
-     * Iterates over the members array and prints details of each member for with formatted space Display Attendees and Guest.
-     */
-    public void displayPrintMembers() {
-        for (int i = 0; i < size; i++) {
-            System.out.println("   " + members[i].toString());
-        }
-    }
-
-    /**
      * Retrieves a member from the list matching the given profile.
      *
      * @param profile The profile to match against members in the list.
@@ -383,16 +373,17 @@ public class MemberList {
         return null;
     }
 
-
-
-
-    public boolean addGuest(Member member) {
+    /**
+     * Adds a guest to the list of members. This method is used to dynamically add guests, potentially for tracking guest visits or temporary memberships. If the current array of members is full, it automatically increases its size to accommodate the new guest. This method assumes that a "guest" is treated similarly to a member for the purposes of list management.
+     *
+     * @param member The guest to be added to the list. This can be an instance of any class that extends Member, including guests with specific attributes if applicable.
+     */
+    public void addGuest(Member member) {
         if (size == members.length) {
             grow();
         }
         members[size] = member;
         size++;
-        return true;
     }
 }
 

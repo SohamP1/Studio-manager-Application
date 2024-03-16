@@ -196,6 +196,17 @@ public class Schedule {
         return false;
     }
 
+    /**
+     * Retrieves a list of all scheduled fitness classes.
+     * This method goes through the array of classes and collects all non-null
+     * fitness class objects into an ArrayList. This allows for easy access
+     * to all current classes in the schedule, which can be useful for
+     * displaying class information or performing other operations that require
+     * a list of classes.
+     *
+     * @return An ArrayList containing all non-null FitnessClass objects currently
+     *         scheduled. If there are no classes, returns an empty list.
+     */
     public ArrayList<FitnessClass> getClasses() {
         ArrayList<FitnessClass> classList = new ArrayList<>();
 
@@ -207,9 +218,5 @@ public class Schedule {
         }
 
         return classList;
-    }
-
-    public int getNumClasses() {
-        return numClasses;
     }
 }

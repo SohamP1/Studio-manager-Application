@@ -177,8 +177,6 @@ public class Member implements Comparable<Member> {
     public void registerClass(FitnessClass fitnessClass) {
         if (registeredClassCount < registeredClasses.length) {
             registeredClasses[registeredClassCount++] = fitnessClass;
-        } else {
-            System.out.println("Maximum classes reached.");
         }
     }
 
