@@ -885,6 +885,25 @@ public class StudioManagerController {
         }
     }
 
+//    private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
+//        schedule.load(file);
+//        // Clear existing items in the table
+//        class_schedule_table.getItems().clear();
+//
+//        if (schedule.getClasses() == null) {
+//            outputArea.setText("Can not load the classes from file");
+//        }
+//    }
+//    private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
+//        schedule.load(file);
+//        // Clear existing items in the table
+//        class_schedule_table.getItems().clear();
+//
+//        if (schedule.getNumClasses() == 0) {
+//            outputArea.setText("Can not load the classes from file");
+//        }
+//    }
+
     private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
         schedule.load(file);
         // Clear existing items in the table

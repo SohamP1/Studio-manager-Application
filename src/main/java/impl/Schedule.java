@@ -219,4 +219,7 @@ public class Schedule {
 
         return classList;
     }
+    public int getNumClasses() {
+        return numClasses;
+    }
 }
