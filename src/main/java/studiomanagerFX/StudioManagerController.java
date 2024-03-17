@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 
 public class StudioManagerController {
@@ -133,6 +134,8 @@ public class StudioManagerController {
         classPiscatawayToggle.setToggleGroup(classAttendanceGroupLocation);
         classSomervilleToggle.setToggleGroup(classAttendanceGroupLocation);
 
+        classAttendanceDob.getEditor().setDisable(true);
+        dateOfBirth.getEditor().setDisable(true);
 
         // Populate the ComboBox with values from 0 to 3
         guestPass.getItems().clear(); // Clear existing items if any
@@ -149,7 +152,10 @@ public class StudioManagerController {
         // Populate the table in studio location tab with Location enum values
         ObservableList<Location> locations = FXCollections.observableArrayList(Location.values());
         studio_location_table.setItems(locations);
+
     }
+
+
     private boolean validateMembershipInput() {
         String firstName = firstname.getText().trim();
         String lastName = lastname.getText().trim();
@@ -166,7 +172,7 @@ public class StudioManagerController {
         }
 
         if (dobLocalDate == null) {
-            outputArea.setText("Date of birth is required.");
+            outputArea.setText("Enter a proper DOB.");
             return false;
         }
 
@@ -358,7 +364,7 @@ public class StudioManagerController {
         outputArea.clear();
         try {
             memberList.load(new File("src/main/java/test/memberList.txt"));
-            outputArea.setText("Updating member list and class schedule...\n" + memberList.getMemberListString());
+            outputArea.setText("Updating member list...\n" + memberList.getMemberListString());
             //clearMembershipInputs();
         } catch (FileNotFoundException e) {
             outputArea.setText("Error loading initial files: " + e.getMessage());
@@ -498,7 +504,7 @@ public class StudioManagerController {
      * @param dobString The date of birth of the member.
      */
     private void printMemberNotFound(String firstName, String lastName, Date dobString) {
-        outputArea.setText(firstName + " " + lastName + " " + dobString + " is not in the member database.");
+        outputArea.setText(firstName + " " + lastName + " is not in the member database.");
     }
 
     /**
@@ -800,7 +806,7 @@ public class StudioManagerController {
         outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
                 " (guest) attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
         fitnessClass.addGuest(member);
-       // member.registerClass(fitnessClass);
+        // member.registerClass(fitnessClass);
     }
 
     /**
@@ -909,6 +915,9 @@ public class StudioManagerController {
         // Clear existing items in the table
         class_schedule_table.getItems().clear();
 
+        if(schedule.getNumClasses() == 0) {
+            outputArea.setText("Can not load the classes from file");
+        }
         // Get the existing items in the table
         ObservableList<FitnessClass> items = FXCollections.observableArrayList();
         class_schedule_table.setItems(items);

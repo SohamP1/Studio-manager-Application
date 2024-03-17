@@ -222,4 +222,5 @@ public class Schedule {
     public int getNumClasses() {
         return numClasses;
     }
+
 }
