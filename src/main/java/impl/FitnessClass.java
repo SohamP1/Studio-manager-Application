@@ -136,16 +136,6 @@ public class FitnessClass {
     }
 
     /**
-     * Checks if a guest is already registered for this fitness class.
-     *
-     * @param member The member to check.
-     * @return true if the guest is already registered; false otherwise.
-     */
-    public boolean isGuestRegistered(Member member) {
-        return guests.contains(member);
-    }
-
-    /**
      * Attempts to add a member to this fitness class.
      *
      * @param member The member to add.

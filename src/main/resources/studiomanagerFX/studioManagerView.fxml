@@ -24,7 +24,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studiomanagerFX.StudioManagerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studiomanagerFX.StudioManagerController">
    <center>
        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
            <Tab text="Membership">
@@ -319,8 +319,8 @@
                     <menus>
                       <Menu mnemonicParsing="false" text="Member">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyProfile" text="Print by Profile" />
-                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintbyCounty" text="Print by County/Zipcode" />
+                          <MenuItem mnemonicParsing="false" onAction="#onclickPrintByProfile" text="Print by Profile" />
+                              <MenuItem mnemonicParsing="false" onAction="#onclickPrintByCounty" text="Print by County/Zipcode" />
                               <MenuItem mnemonicParsing="false" onAction="#onclickPrintWithNextDues" text="Print with next dues" />
                         </items>
                       </Menu>

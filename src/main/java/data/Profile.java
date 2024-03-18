@@ -103,11 +103,9 @@ public class Profile implements Comparable<Profile>{
     @Override
     public boolean equals(Object profile) {
         if(profile instanceof Profile) {
-            if(this.fname.compareToIgnoreCase(((Profile) profile).fname) == 0 &&
+            return this.fname.compareToIgnoreCase(((Profile) profile).fname) == 0 &&
                     this.lname.compareToIgnoreCase(((Profile) profile).lname) == 0 &&
-                    this.dob.compareTo(((Profile) profile).dob) == 0) {
-                return true;
-            }
+                    this.dob.compareTo(((Profile) profile).dob) == 0;
         }
         return false;
     }

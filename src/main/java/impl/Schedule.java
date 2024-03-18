@@ -99,8 +99,12 @@ public class Schedule {
     }
 
     /**
-     * Prints the loaded schedule of fitness classes, including details such as class info, instructor,
-     * time, and studio location.
+     * Generates and returns a string representation of the current schedule of fitness classes.
+     * The string includes details such as class information, instructor name, time, and studio location
+     * for each class. If no classes are scheduled, a message indicating this is returned instead.
+     *
+     * @return A formatted string listing all scheduled fitness classes and their details,
+     * or a message indicating that no classes are scheduled.
      */
     public String getScheduleString() {
         StringBuilder sb = new StringBuilder();
@@ -126,8 +130,13 @@ public class Schedule {
 
 
     /**
-     * Prints classes along with their attendees and guests. Each class is listed with its details
-     * followed by the names of registered members and guests if any.
+     * Generates and returns a string representation of fitness classes along with their registered
+     * attendees and guests. For each class, the method lists its details (class information, instructor,
+     * time, studio location) followed by the names of all registered members and guests, if any.
+     * If no classes are scheduled, a message indicating this is returned instead.
+     *
+     * @return A formatted string detailing all fitness classes with their attendees and guests,
+     * or a message indicating that no classes are scheduled.
      */
     public String printClassWithAttendees() {
         StringBuilder sb = new StringBuilder();
@@ -219,6 +228,13 @@ public class Schedule {
 
         return classList;
     }
+
+    /**
+     * Retrieves the total number of fitness classes currently scheduled.
+     * This method provides a simple way to access the count of classes managed by the class scheduler.
+     *
+     * @return The total number of scheduled fitness classes.
+     */
     public int getNumClasses() {
         return numClasses;
     }

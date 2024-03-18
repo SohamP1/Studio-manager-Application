@@ -1,16 +1,11 @@
 package data;
-/**
- * Date class which is used to create the date object for artist and album
- *
- * @author Soham Patel
- */
 
-import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
  * data.Date class represents a date with month, day, and year components.
  * It implements the Comparable interface to allow comparison between dates.
+ * author Soham Patel
  */
 public class Date implements Comparable<Date> {
     /**

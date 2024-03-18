@@ -8,8 +8,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Main application class for the Studio Manager Application.
- * This class extends {@link Application} and serves as the entry point for the JavaFX application.
+ * The {@code StudioManagerMain} class serves as the entry point for the Studio Manager application.
+ * This class extends {@link Application}, leveraging JavaFX to start and display the graphical user interface.
+ * The default constructor is implicitly used by the JavaFX framework to initialize the application before
+ * the {@code start} method is called.
+ *
+ * <p>Within this class, the {@code start} method is overridden to set up the primary stage (window) of the application,
+ * load the main FXML layout, and display the GUI to the user.</p>
  */
 public class StudioManagerMain extends Application {
     /**

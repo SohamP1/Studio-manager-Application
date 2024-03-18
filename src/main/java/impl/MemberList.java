@@ -162,27 +162,26 @@ public class MemberList {
             Date dob = new Date(parts[3]);
             Date expiration = new Date(parts[4]);
             Location location = Location.valueOf(parts[5].toUpperCase());
-            Member member;
-            switch (type) {
-                case "B":
-                    member = new Basic(new Profile(firstName, lastName, dob), expiration, location);
-                    break;
-                case "F":
-                    member = new Family(new Profile(firstName, lastName, dob), expiration, location);
-                    break;
-                case "P":
-                    member = new Premium(new Profile(firstName, lastName, dob), expiration, location);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid member type");
-            }
+            Member member = switch (type) {
+                case "B" -> new Basic(new Profile(firstName, lastName, dob), expiration, location);
+                case "F" -> new Family(new Profile(firstName, lastName, dob), expiration, location);
+                case "P" -> new Premium(new Profile(firstName, lastName, dob), expiration, location);
+                default -> throw new IllegalArgumentException("Invalid member type");
+            };
             this.add(member);
         }
         scanner.close();
     }
 
     /**
-     * Return all members currently in the list to the standard output.
+     * Generates and returns a string representation of all members currently in the list.
+     * This method iterates through the member list, appending each member's string representation
+     * to a {@link StringBuilder} object, resulting in a formatted list of members. The returned string
+     * starts with a header line, includes each member on a new line, and ends with a footer line,
+     * indicating the end of the member list.
+     *
+     * @return A string containing a formatted list of all members, each on a new line,
+     * enclosed between header and footer lines.
      */
     public String getMemberListString() {
         StringBuilder sb = new StringBuilder("\n-list of members loaded-\n");
@@ -195,8 +194,16 @@ public class MemberList {
 
 
     /**
-     * Sorts and prints the member list by member profiles using a bubble sort algorithm.
-     * Sorting is based on last name, then first name, and finally date of birth.
+     * Generates and returns a string representation of the member list sorted by member profiles,
+     * using a bubble sort algorithm. The sorting criteria prioritize the last name, then the first name,
+     * and finally the date of birth of the members. The method starts by checking if the member list is empty,
+     * appending a message if so. Otherwise, it sorts the members and appends each member's string representation
+     * to a StringBuilder object. The resulting string includes a header indicating the sorting criteria, the sorted list of members,
+     * each on a new line, and a footer marking the end of the list.
+     *
+     * @return A string containing the sorted list of members by their profiles, each on a new line,
+     * enclosed between a header indicating the sorting criteria and a footer line.
+     * If the collection is empty, a message indicating this is returned instead.
      */
     public String printByMember() {
         StringBuilder sb = new StringBuilder();
@@ -268,9 +275,16 @@ public class MemberList {
     }
 
     /**
-     * Sorts and prints members by county and zip code.
-     * This method first sorts the members by county names in a case-insensitive manner,
-     * and then by their zip codes if counties are identical.
+     * Generates and returns a string representation of the member list sorted by county and zip code.
+     * The sorting is performed first by county names in a case-insensitive manner. If two members belong
+     * to the same county, they are then sorted by their zip codes. The method checks if the member list
+     * is empty and returns a message indicating this if true. Otherwise, it performs the sorting and
+     * constructs a formatted string that includes a header, the sorted list of members each on a new line,
+     * and a footer marking the end of the list.
+     *
+     * @return A string containing the sorted list of members by county and zip code, each on a new line,
+     * enclosed between a header and a footer line. If the collection is empty, a message
+     * indicating this is returned instead.
      */
     public String printByCounty() {
         StringBuilder sb = new StringBuilder();
@@ -323,8 +337,16 @@ public class MemberList {
     }
 
     /**
-     * Prints members along with their next due fees.
-     * The method iterates over all members and calculates their next due amount.
+     * Generates and returns a string representation of all members along with their next due fees.
+     * This method iterates over the member list, calculates each member's next due amount using
+     * their specific billing method, and constructs a formatted string. The resulting string includes
+     * a header indicating the purpose, the list of members with their next due amounts formatted
+     * to two decimal places, and a footer line. If the member collection is empty, a message indicating
+     * this is returned instead.
+     *
+     * @return A string containing the list of members with their next due fees, each member on a new line,
+     * enclosed between header and footer lines. If the collection is empty, a message indicating
+     * this is returned.
      */
     public String printFees() {
         StringBuilder sb = new StringBuilder();
@@ -344,8 +366,14 @@ public class MemberList {
     }
 
     /**
-     * Utility method for printing member details.
-     * Iterates over the members array and prints details of each member.
+     * Generates and returns a string representation of the members in the list.
+     * This utility method iterates over the members array and appends the string representation
+     * of each member to a StringBuilder object. The method ensures each member is listed on a new line,
+     * resulting in a cleanly formatted list of members. This method is useful for creating an overview
+     * of all members without additional information such as due fees or sorting criteria.
+     *
+     * @return A string containing the details of each member in the list, each on a new line. If a member
+     * is null (indicating an empty slot in the array), it is skipped in the output.
      */
     public String printMembers() {
         StringBuilder sb = new StringBuilder();
