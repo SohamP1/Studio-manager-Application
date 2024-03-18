@@ -696,25 +696,6 @@ public class StudioManagerController {
         recordAttendance(fitnessClass, member);
     }
 
-//    //clear the inputs after registration
-//    private void clearClassAttendanceInputs() {
-//        classFirstname.clear();
-//        classLastname.clear();
-//        classAttendanceDob.setValue(null);
-//        classGroup.getSelectedToggle().setSelected(false);
-//        instructorGroup.getSelectedToggle().setSelected(false);
-//        classAttendanceGroupLocation.getSelectedToggle().setSelected(false);
-//    }
-//
-//    //clear the inputs after registration
-//    private void clearMembershipInputs() {
-//        firstname.clear();
-//        lastname.clear();
-//        dateOfBirth.setValue(null);
-//        memberTypeGroup.getSelectedToggle().setSelected(false);
-//        homeStudioGroup.getSelectedToggle().setSelected(false);
-//    }
-
     /**
      * Retrieves a member from the member list based on the provided profile.
      *
@@ -1041,7 +1022,6 @@ public class StudioManagerController {
         outputArea.setText(member.getProfile().getFname() + " " + member.getProfile().getLname() +
                 " (guest) attendance recorded " + fitnessClass.getClassInfo().getClassName().toUpperCase() + " at " + fitnessClass.getStudio().getCity().toUpperCase() + ", " + zip + ", " + county.toUpperCase());
         fitnessClass.addGuest(member);
-        // member.registerClass(fitnessClass);
     }
 
     /**
@@ -1135,25 +1115,6 @@ public class StudioManagerController {
             }
         }
     }
-
-//    private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
-//        schedule.load(file);
-//        // Clear existing items in the table
-//        class_schedule_table.getItems().clear();
-//
-//        if (schedule.getClasses() == null) {
-//            outputArea.setText("Can not load the classes from file");
-//        }
-//    }
-//    private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
-//        schedule.load(file);
-//        // Clear existing items in the table
-//        class_schedule_table.getItems().clear();
-//
-//        if (schedule.getNumClasses() == 0) {
-//            outputArea.setText("Can not load the classes from file");
-//        }
-//    }
 
     /**
      * Loads fitness classes from the specified file into the application. Updates the class schedule table
