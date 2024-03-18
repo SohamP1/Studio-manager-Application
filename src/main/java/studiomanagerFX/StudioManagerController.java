@@ -1124,13 +1124,21 @@ public class StudioManagerController {
      * @throws FileNotFoundException if the specified file does not exist.
      */
     private void loadFitnessClassesFromFile(File file) throws FileNotFoundException {
+        // Create a temporary schedule object to check if the file contains any classes
+        Schedule tempSchedule = new Schedule();
+        tempSchedule.load(file);
+
+        if (tempSchedule.getNumClasses() == 0) {
+            outputArea.setText("The file does not contain any class schedule.");
+            return; // Exit the method since there are no classes to load
+        }
+
+        // If the file contains classes, proceed with loading them into the application
         schedule.load(file);
+
         // Clear existing items in the table
         class_schedule_table.getItems().clear();
 
-        if (schedule.getNumClasses() == 0) {
-            outputArea.setText("Can not load the classes from file");
-        }
         // Get the existing items in the table
         ObservableList<FitnessClass> items = FXCollections.observableArrayList();
         class_schedule_table.setItems(items);
@@ -1146,6 +1154,7 @@ public class StudioManagerController {
         col_time.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTime().toString()));
         col_studio_location.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudio().toString()));
     }
+
 
     /**
      * Triggered by clicking a button to print the member list sorted by profile information.
